@@ -382,7 +382,7 @@ footer{border-top:1px solid var(--line);padding-top:18px;font-size:13px;color:va
     <div class="shead">
       <div>
         <h2 id="h-topics">Research topics</h2>
-        <p id="topicsDesc">Each topic is sized by how many of my publications touch it. Click topics, or use the search and filters, to narrow the map, figures and list; hover a topic to see which topics it travels with.</p>
+        <p id="topicsDesc">Each topic is sized by how many of my publications touch it. Click topics, or use the search and filters, to narrow the map, figures and list; hover a topic to see which topics it travels with. Click an empty spot in the cloud to clear the filters.</p>
       </div>
     </div>
   </section>
@@ -1392,6 +1392,7 @@ function drawTagOutline(){
   svg.innerHTML=layer(pad+2.5,`style="fill:${c}"`)+layer(pad,`style="fill:var(--surface)"`)+layer(pad,`style="fill:${c};opacity:.14"`);
 }
 $("#map").addEventListener("click",e=>{ if(e.target.closest(".mpt")||!anyFilter()) return; clearFilters(); update(); });
+$("#cloud").addEventListener("click",e=>{ if(e.target.closest("button,a")||!anyFilter()) return; clearFilters(); update(); });
 function mapFx(){ if(!mapBuilt) return; drawTagOutline(); const h=state.hover;
   document.querySelectorAll(".mpt").forEach(el=>{ const p=byId[el.dataset.id]; el.classList.toggle("dim", !matches(p) || (!!h && !p.topics.includes(h))) }); }
 function setView(v){

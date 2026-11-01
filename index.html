@@ -412,7 +412,7 @@ footer{border-top:1px solid var(--line);padding-top:18px;font-size:13px;color:va
     <div class="shead">
       <div>
         <h2 id="h-pubs">Publications</h2>
-        <p id="pubsDesc">Click any figure to read about the paper and open it. Switch to List for every publication with full details.</p>
+        <p id="pubsDesc"></p>
         <div class="viewswitch pswitch" role="group" aria-label="Choose how to show publications"><button type="button" data-pview="grid" aria-pressed="true">Figures</button><button type="button" data-pview="list" aria-pressed="false">List</button></div>
       </div>
     </div>
@@ -1414,7 +1414,7 @@ function setView(v){
 }
 document.querySelectorAll(".viewswitch [data-view]").forEach(b=>b.onclick=()=>setView(b.dataset.view));
 /* publications: figures grid or list with thumbnails */
-const PDESC={grid:"Click any figure to read about the paper and open it. Switch to List for every publication with full details.",
+const PDESC={grid:`Figures from ${GALLERY.length} of my ${PAPERS.length} publications. Click any figure to read about the paper and open it. Switch to List to see all ${PAPERS.length} publications with full details.`,
   list:"Every publication, with a figure for each paper. Click a figure or title to read about the paper."};
 function setPubView(v){
   document.querySelectorAll("[data-pview]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.pview===v));
@@ -1430,7 +1430,7 @@ let mrz; addEventListener("resize",()=>{ if($("#mapView").hidden) return; clearT
 
 buildCloud(); buildGrid(); buildList(); update();
 try{ if(localStorage.getItem("jy-view")==="map") setView("map") }catch(e){}
-try{ if(localStorage.getItem("jy-pubview")==="list") setPubView("list") }catch(e){}
+{ let v="grid"; try{ if(localStorage.getItem("jy-pubview")==="list") v="list" }catch(e){} setPubView(v); }
 requestAnimationFrame(()=>paintCanvases());
 let rz; addEventListener("resize",()=>{ clearTimeout(rz); rz=setTimeout(()=>paintCanvases(),150) });
 const retheme=()=>{ paintCanvases() };

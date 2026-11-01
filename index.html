@@ -888,6 +888,8 @@ function update(){
   if(state.fVenue) h+=`<button class="chip" type="button" data-rf="fVenue" style="--c:var(--muted)"><i></i>Venue: ${esc(VENUES[state.fVenue])} ×</button>`;
   if(any) h+=`<button class="clear" type="button" data-clear>Clear all</button>`;
   st.innerHTML=h;
+  ["fData","fArea","fMethod"].forEach(id=>{ const sel=$("#"+id), mine=[...state.topics].filter(t=>(sel._grps||[]).includes(TOPICS[t][1]));
+    sel.value = mine.length===0 ? "" : (mine.length===1&&state.topics.size===1 ? mine[0] : "__multi"); });
   const sp=$("#seePubs"); if(sp){ const grid=!$("#gridView").hidden, n=listed;   // same count as the topic tags
     sp.hidden=!any; sp.disabled=n===0;
     const pl=k=>`${k} ${k===1?"paper":"papers"}`, fl=k=>`${k} ${k===1?"figure":"figures"}`;
@@ -910,10 +912,14 @@ $("#q").addEventListener("input",e=>{ state.q=e.target.value.trim().toLowerCase(
   Object.keys(TOPICS).filter(t=>grps.includes(TOPICS[t][1])).map(t=>[t,PAPERS.filter(p=>p.topics.includes(t)).length]).filter(x=>x[1]>0)
     .sort((a,b)=>TOPICS[a[0]][0].localeCompare(TOPICS[b[0]][0]))
     .forEach(([t,n])=>sel.insertAdjacentHTML("beforeend",`<option value="${t}">${esc(TOPICS[t][0])} (${n})</option>`));
-  // data type, application area and method menus replace each other: combining them leaves too few papers
-  sel.addEventListener("change",()=>{ state[id]=sel.value;
-    if(sel.value) ["fData","fArea","fMethod"].filter(k=>k!==id).forEach(k=>{ state[k]=""; $("#"+k).value="" });
+  sel.insertAdjacentHTML("beforeend",`<option value="__multi" hidden disabled>Several (see topics)</option>`);
+  // these menus are another way to pick topics in the cloud: choosing one selects just that topic,
+  // and "All" removes this menu's topics from the selection
+  sel.addEventListener("change",()=>{
+    if(sel.value) state.topics=new Set([sel.value]);
+    else [...state.topics].filter(t=>grps.includes(TOPICS[t][1])).forEach(t=>state.topics.delete(t));
     update() });
+  sel._grps=grps;
 });
 { const sel=$("#fVenue"), cnt={}; PAPERS.forEach(p=>{const g=venueGroup(p); cnt[g]=(cnt[g]||0)+1});
   Object.keys(VENUES).filter(g=>cnt[g]).forEach(g=>sel.insertAdjacentHTML("beforeend",`<option value="${g}">${esc(VENUES[g])} (${cnt[g]})</option>`));

@@ -770,7 +770,7 @@ function buildCloud(){
 }
 function hoverFx(){
   const h = state.hover;
-  document.querySelectorAll(".tag").forEach(b=>{ const t=b.dataset.t; b.classList.toggle("dim", !!h && t!==h && !(co[h]&&co[h][t])) });
+  document.querySelectorAll(".tag").forEach(b=>{ const t=b.dataset.t; b.classList.toggle("dim", !!h && t!==h && !state.topics.has(t) && !(co[h]&&co[h][t])) });   // a selected tag never dims
   document.querySelectorAll(".tile").forEach(el=>{ const p=byId[el.dataset.id]; el.classList.toggle("dim", !!h && !p.topics.includes(h)) });
   if (typeof mapFx==="function") mapFx();
 }

@@ -873,13 +873,10 @@ function update(){
   document.querySelectorAll("#pubs > div").forEach(sec=>{ let n=0;
     sec.querySelectorAll(".pub").forEach(li=>{ const ok=matches(byId[li.dataset.id]); li.hidden=!ok; if(ok) n++ });
     sec.hidden = n===0; sec.querySelector("[data-count]").textContent = n; listed+=n });
-  // paper songs follow the same filters; the section hides when no song matches
-  let sung=0; const cards=document.querySelectorAll(".scard");
-  cards.forEach(c=>{ const ok=matches(byId[c.dataset.id]); c.hidden=!ok; if(ok) sung++ });
-  if(cards.length) $("#songsSec").hidden = sung===0;
+  // paper songs are always shown in full; filters don't touch them
   mapFx();
   const st=$("#status"), any=anyFilter();
-  let h = any ? `<span>Showing ${cards.length?`<strong>${sung}</strong> of ${cards.length} songs, `:""}<strong>${shown}</strong> of ${GALLERY.length} figures and <strong>${listed}</strong> of ${PAPERS.length} publications</span>`
+  let h = any ? `<span>Showing <strong>${shown}</strong> of ${GALLERY.length} figures and <strong>${listed}</strong> of ${PAPERS.length} publications</span>`
               : `<span>${GALLERY.length} figures · ${PAPERS.length} publications. Pick topics to narrow them down.</span>`;
   state.topics.forEach(t=> h+=`<button class="chip" type="button" data-rm="${t}" style="--c:${tcol(t)}" aria-label="Remove ${esc(TOPICS[t][0])}"><i></i>${esc(TOPICS[t][0])} ×</button>`);
   if(state.year!==null) h+=`<button class="chip" type="button" data-ry style="--c:var(--accent)"><i></i>${state.year} ×</button>`;
@@ -1196,7 +1193,7 @@ songAudio.addEventListener("ended",()=>{ if(playQueue){ const k=playQueue.indexO
   $("#playAll").onclick=()=>{
     if(playQueue && !songAudio.paused){ songAudio.pause(); return; }
     if(playQueue && songAudio.paused && songAudio.currentTime>0){ songAudio.play().catch(()=>{}); return; }
-    const ids=[...list.querySelectorAll(".scard:not([hidden])")].map(c=>c.dataset.id); if(!ids.length) return;
+    const ids=[...list.querySelectorAll(".scard")].map(c=>c.dataset.id); if(!ids.length) return;
     playQueue=ids; playQueue.cur=ids[0]; songAudio.src=SONG_DIR+SONGS[ids[0]].file; songAudio.currentTime=0; songAudio.play().catch(()=>{});
   };
 })();

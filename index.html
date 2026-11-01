@@ -147,7 +147,6 @@ h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:
 .scard .sflower{position:absolute;left:-2%;top:-2%;z-index:4;width:34px;height:34px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
 @media (max-width:620px){.scard .sflower{width:26px;height:26px}}
 .flower-inline{display:inline-block;width:22px;height:22px;flex:none}
-.shead .skey{margin-top:6px}
 .ct{display:inline-block;width:fit-content;font-family:var(--f-mono);font-style:normal;font-size:11px;line-height:1.5;color:var(--accent);border:1px solid var(--accent);border-radius:99px;padding:0 7px;margin-top:4px;white-space:nowrap}
 .pub .v .ct,.dlg .meta .ct{margin:0 0 0 8px;vertical-align:1px}
 .figswitch{position:absolute;left:12px;top:12px;z-index:4;display:flex;border:1px solid var(--line);border-radius:99px;overflow:hidden;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.15)}
@@ -367,7 +366,6 @@ footer{border-top:1px solid var(--line);padding-top:18px;font-size:13px;color:va
       <div>
         <h2 id="h-songs">Paper songs <small class="credit">(I made them using Claude and Suno)</small></h2>
         <p>Songs about the ideas behind some of my papers. Press play on one, or play them all.</p>
-        <p class="fkey skey"><span class="flower-inline" aria-hidden="true"></span>marks papers with 100+ citations on Google Scholar</p>
       </div>
       <button type="button" class="playall" id="playAll"><span aria-hidden="true">▶</span> Play all</button>
     </div>
@@ -1181,7 +1179,7 @@ songAudio.addEventListener("ended",()=>{ if(playQueue){ const k=playQueue.indexO
   // cards are built right away (no need to load any audio first), newest paper first
   Object.keys(SONGS).filter(id=>byId[id]).sort((a,b)=>byId[b].year-byId[a].year).forEach(id=>{ const s=SONGS[id], p=byId[id];
       const c=document.createElement("div"); c.className="scard"+(p.award?" has-award":""); c.dataset.id=id;
-      c.innerHTML=`<div class="deck">${p.c100?`<span class="sflower" title="100+ citations on Google Scholar">${FLOWER}</span>`:""}
+      c.innerHTML=`<div class="deck">
           <button class="vinyl" type="button" aria-label="Play or pause the song about ${esc(p.short)}"><span class="disc"><span class="label"></span></span></button>
           <button class="sp" type="button" aria-label="Play the song about ${esc(p.short)}">▶</button>
         </div>

@@ -97,7 +97,8 @@ h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:
 .clear{font:inherit;font-size:13px;background:none;border:0;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .finder{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 12px}
 .filterbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 0 10px;margin:-24px 0 -16px}
-.filterbar .status{margin:10px 0 0;min-height:24px}
+.filterbar .status{margin:0;min-height:24px}
+.filterbar .fbrow{margin-bottom:10px}
 @media (min-width:901px){.filterbar .finder{display:grid;grid-template-columns:1.25fr repeat(4,minmax(0,1fr))}
   .filterbar .pick select,.filterbar .search input{width:100%;min-width:0;box-sizing:border-box}}
 @media (max-width:900px){
@@ -107,7 +108,8 @@ h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:
   .filterbar .search input{width:200px}
   .filterbar .pick select{min-width:150px;width:150px}
   .filterbar .eyebrow{font-size:10.5px}
-  .filterbar .status{margin:6px 0 0;font-size:13px}
+  .filterbar .status{margin:0;font-size:13px}
+  .filterbar .fbrow{margin-bottom:6px}
 }
 .pick{display:flex;flex-direction:column;gap:4px}
 .pick select{font:inherit;font-size:14px;padding:7px 10px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--ink);min-width:170px;max-width:100%}
@@ -132,7 +134,7 @@ h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:
 .fkey{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);margin:0;white-space:nowrap}
 .fbrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 16px}
 .fbrow .status{flex:1 1 320px;min-width:0}
-.filterbar .fkey{margin-top:10px}
+.filterbar .fkey{margin-top:0}
 .flower-inline{width:18px!important;height:18px!important}
 .scard.has-award{border-color:var(--g-method);box-shadow:0 0 0 1px var(--g-method)}
 .scard .smeta .saw{font-family:var(--f-mono);font-size:11px;font-weight:500;color:var(--g-method);margin-bottom:2px}
@@ -372,6 +374,7 @@ footer{border-top:1px solid var(--line);padding-top:18px;font-size:13px;color:va
   </section>
 
   <div class="filterbar" id="filterbar" role="search" aria-label="Filter papers">
+    <div class="fbrow"><div class="status" id="status" aria-live="polite"></div><p class="fkey"><span class="flower-inline" aria-hidden="true"></span>marks papers with 100+ citations on Google Scholar</p></div>
     <div class="finder">
       <label class="search" for="q"><span class="eyebrow">Search</span><input id="q" type="search" placeholder="Title, author, venue…" autocomplete="off"></label>
       <label class="pick" for="fData"><span class="eyebrow">Type of data</span><select id="fData"><option value="">All</option></select></label>
@@ -379,7 +382,6 @@ footer{border-top:1px solid var(--line);padding-top:18px;font-size:13px;color:va
       <label class="pick" for="fMethod"><span class="eyebrow">Method</span><select id="fMethod"><option value="">All</option></select></label>
       <label class="pick" for="fVenue"><span class="eyebrow">Venue</span><select id="fVenue"><option value="">All</option></select></label>
     </div>
-    <div class="fbrow"><div class="status" id="status" aria-live="polite"></div><p class="fkey"><span class="flower-inline" aria-hidden="true"></span>marks papers with 100+ citations on Google Scholar</p></div>
   </div>
 
   <section aria-labelledby="h-topics">

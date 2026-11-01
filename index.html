@@ -626,7 +626,7 @@ document.querySelectorAll('.flower-inline').forEach(e=>e.innerHTML=FLOWER);
 const SELECTED = new Set(["J29","J28","J27","J26","J25","J24","J23","J22","J21","J20","J19","J18","J17","J16","J15","J14","J13","J10","J9","J8","J5","J4","J3","J2","C26","C25","C24","C23","C22","C21","C20","C19","C18","C17","C16","C15","C14","C13","C12","C11","C10","C8","C7","C4","C3","C2","C1","B3","A7"]);
 const SHOW_ONLY_SELECTED = false;   // set to true when all figures are in
 const EXTRA_IN_GRID = new Set(["A7","P7","P5"]);   // MetaboFood and posters with summaries: shown in the grid too
-const HIDE_FROM_GRID = new Set(["J12","B2","J7","B1","C9","C6"]);   // ManyInsights, Dimension Management, Microarray, Hierarchical Exploration: list only
+const HIDE_FROM_GRID = new Set(["J12","B2","J7","B1","C9","C6","J1","C5"]);   // ManyInsights, Dimension Management, Microarray, Hierarchical Exploration; InterRing 2003 journal and VaR Display 2004 (repeat C1 / J4): list only
 const GALLERY = PAPERS.filter(p => !HIDE_FROM_GRID.has(p.id) && (SHOW_ONLY_SELECTED ? SELECTED.has(p.id) : ("JCB".includes(p.type) || EXTRA_IN_GRID.has(p.id))))
   .sort((a,b) => b.year - a.year);   // newest first; within a year, list order (journals, then conferences, chapters, abstracts, posters)
 const byId = Object.fromEntries(PAPERS.map(p=>[p.id,p]));

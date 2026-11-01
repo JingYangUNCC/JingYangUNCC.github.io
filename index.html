@@ -887,9 +887,10 @@ function update(){
   if(state.fVenue) h+=`<button class="chip" type="button" data-rf="fVenue" style="--c:var(--muted)"><i></i>Venue: ${esc(VENUES[state.fVenue])} ×</button>`;
   if(any) h+=`<button class="clear" type="button" data-clear>Clear all</button>`;
   st.innerHTML=h;
-  const sp=$("#seePubs"); if(sp){ const grid=!$("#gridView").hidden, n=grid?shown:listed;
+  const sp=$("#seePubs"); if(sp){ const grid=!$("#gridView").hidden, n=listed;   // same count as the topic tags
     sp.hidden=!any; sp.disabled=n===0;
-    sp.textContent = n===0 ? "No matching papers" : `See ${n} matching ${n===1?"paper":"papers"} ↓`; }
+    const pl=k=>`${k} ${k===1?"paper":"papers"}`, fl=k=>`${k} ${k===1?"figure":"figures"}`;
+    sp.textContent = n===0 ? "No matching papers" : `See ${grid&&shown<n?fl(shown)+", ":""}${pl(n)} ↓`; }
 }
 function clearFilters(){ state.topics.clear(); state.year=null; state.q=""; $("#q").value="";
   ["fData","fArea","fMethod","fVenue"].forEach(k=>{ state[k]=""; $("#"+k).value="" }); }

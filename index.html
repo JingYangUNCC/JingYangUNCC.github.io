@@ -889,7 +889,7 @@ function update(){
   st.innerHTML=h;
   const sp=$("#seePubs"); if(sp){ const grid=!$("#gridView").hidden, n=grid?shown:listed;
     sp.hidden=!any; sp.disabled=n===0;
-    sp.textContent = n===0 ? "No matching papers" : `See ${n} matching ${grid?(n===1?"figure":"figures"):(n===1?"publication":"publications")} ↓`; }
+    sp.textContent = n===0 ? "No matching papers" : `See ${n} matching ${n===1?"paper":"papers"} ↓`; }
 }
 function clearFilters(){ state.topics.clear(); state.year=null; state.q=""; $("#q").value="";
   ["fData","fArea","fMethod","fVenue"].forEach(k=>{ state[k]=""; $("#"+k).value="" }); }

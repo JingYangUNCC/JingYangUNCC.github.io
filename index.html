@@ -1,0 +1,1430 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Jing Yang · Visual Analytics</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Jing Yang, Professor in the Department of Machine Learning at UNC Charlotte. Visual analytics research, publications and figures.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single reading column (≈1120px) — masthead, then a coordinated "topic cloud + year chart" panel that filters the figure matrix and the full list below it. */
+:root{
+  --bg:#F3F5F8; --surface:#FFFFFF; --ink:#172031; --muted:#586477; --line:#DAE0E8; --soft:#E9EDF3;
+  --accent:#1E5BD0;
+  --g-data:#2457C5; --g-domain:#0B7F62; --g-method:#B46D05; --g-ai:#A8327F;
+  --f-display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r:6px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F141C; --surface:#161D29; --ink:#E4E9F1; --muted:#9AA5B7; --line:#283244; --soft:#1D2533;
+  --accent:#86AAFF; --g-data:#86AAFF; --g-domain:#3FC9A0; --g-method:#EDAE45; --g-ai:#E37DC2; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F141C; --surface:#161D29; --ink:#E4E9F1; --muted:#9AA5B7; --line:#283244; --soft:#1D2533;
+  --accent:#86AAFF; --g-data:#86AAFF; --g-domain:#3FC9A0; --g-method:#EDAE45; --g-ai:#E37DC2; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;margin:0;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.wrap{max-width:1120px;margin:0 auto;padding-block:24px 64px;display:flex;flex-direction:column;gap:36px}
+a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* masthead */
+.mast{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px 40px;align-items:start;border-bottom:1px solid var(--line);padding-bottom:22px}
+.mast h1{font-size:clamp(34px,4.6vw,54px);line-height:1;font-weight:700}
+.who{display:flex;align-items:center;gap:clamp(14px,2vw,22px)}
+.who .ident{min-width:0;display:flex;flex-direction:column;gap:6px}
+.portrait{width:clamp(72px,8vw,100px);height:auto;aspect-ratio:1;border-radius:50%;object-fit:cover;flex:none}
+.mast .role{font-size:16.5px;line-height:1.4;margin:0;color:var(--ink)}
+.mast .bio{max-width:68ch;color:var(--muted);margin:14px 0 0;font-size:15px}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:14px;margin:0;padding-top:6px}
+.facts dt{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+.facts dd{margin:0}
+.copy{font:inherit;font-size:12px;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:4px;padding:1px 7px;margin-left:6px;cursor:pointer}
+.copy:hover{color:var(--ink)}
+.linkrow{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:4px}
+
+/* section heads */
+.shead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 24px;margin-bottom:18px}
+.shead h2{font-size:clamp(22px,2.8vw,28px);font-weight:700}
+.shead h2 .credit{font-family:var(--f-body);font-size:15px;font-weight:400;letter-spacing:0;color:var(--muted);margin-left:6px;white-space:nowrap}
+.shead p{margin:4px 0 0;color:var(--muted);max-width:82ch;font-size:15px;text-wrap:pretty}
+
+/* explorer panel */
+.topicpanel{margin-top:-38px}
+.explore{display:grid;grid-template-columns:minmax(0,1fr);gap:20px}
+.explore .cloud{gap:6px 18px;min-height:0;padding:10px 4% 6px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;min-width:0}
+.panel h3{font-size:15px;font-family:var(--f-mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.cloud{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:4px 14px;padding:6px 0 4px;min-height:240px}
+.tag{font-family:var(--f-display);font-weight:500;border:0;background:none;color:var(--c);cursor:pointer;line-height:1.1;padding:3px 4px;border-radius:4px;
+  transition:opacity .15s, background-color .15s}
+.tag sup{font-family:var(--f-mono);font-size:10px;font-weight:400;color:var(--muted);margin-left:2px;vertical-align:super}
+.tag:hover{background:var(--soft)}
+.tag[aria-pressed="true"]{background:var(--c);color:var(--surface)}
+.tag[aria-pressed="true"] sup{color:var(--surface)}
+.tag.dim{opacity:.22}
+.tag.zero{opacity:.18;cursor:default}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;margin-top:12px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:2px;background:var(--c);display:inline-block}
+.yearwrap{display:flex;flex-direction:column;gap:14px;height:100%}
+.yearwrap svg{width:100%;height:auto;display:block;overflow:visible}
+.yearwrap .bar{cursor:pointer}
+.yearwrap text{fill:var(--muted);font-family:var(--f-mono);font-size:10px}
+.counts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:auto;border-top:1px solid var(--line);padding-top:14px}
+.counts div{display:flex;flex-direction:column}
+.counts b{font-family:var(--f-display);font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
+.counts span{font-size:12px;color:var(--muted)}
+.hint{font-size:13px;color:var(--muted);margin:0}
+
+/* filter status */
+.status{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;font-size:14px;color:var(--muted);margin:22px 0 0}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;padding:2px 10px 2px 8px;font:inherit;font-size:13px;cursor:pointer}
+.chip i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.chip:hover{border-color:var(--muted)}
+.clear{font:inherit;font-size:13px;background:none;border:0;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.finder{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 12px}
+.filterbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 0 10px;margin:-24px 0 -16px}
+.filterbar .status{margin:10px 0 0;min-height:24px}
+@media (min-width:901px){.filterbar .finder{display:grid;grid-template-columns:1.25fr repeat(4,minmax(0,1fr))}
+  .filterbar .pick select,.filterbar .search input{width:100%;min-width:0;box-sizing:border-box}}
+@media (max-width:900px){
+  .filterbar{padding:8px 0 6px}
+  .filterbar .finder{flex-wrap:nowrap;overflow-x:auto;gap:8px;padding-bottom:4px;scrollbar-width:thin}
+  .filterbar .search,.filterbar .pick{flex:0 0 auto;width:auto}
+  .filterbar .search input{width:200px}
+  .filterbar .pick select{min-width:150px;width:150px}
+  .filterbar .eyebrow{font-size:10.5px}
+  .filterbar .status{margin:6px 0 0;font-size:13px}
+}
+.pick{display:flex;flex-direction:column;gap:4px}
+.pick select{font:inherit;font-size:14px;padding:7px 10px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--ink);min-width:170px;max-width:100%}
+.search{display:flex;flex-direction:column;gap:4px}
+.search input{font:inherit;font-size:14px;padding:7px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--ink);width:min(280px,70vw)}
+
+/* figure matrix */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(176px,1fr));gap:14px;margin-top:18px}
+.tile{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  transition:transform .18s ease, box-shadow .18s ease, opacity .18s, border-color .18s}
+.tile:hover{transform:translateY(-3px);box-shadow:0 10px 24px -14px rgba(10,20,40,.45);border-color:var(--muted)}
+.tile:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tile.dim{opacity:.25}
+.thumb{position:relative;aspect-ratio:4/3;max-width:100%;background:var(--soft);overflow:hidden}
+.thumb img,.thumb canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.thumb img{background:#fff;object-fit:contain;padding:6px}
+.thumb .id{position:absolute;left:8px;top:8px;font-family:var(--f-mono);font-size:11px;background:var(--surface);color:var(--muted);border-radius:3px;padding:0 5px;border:1px solid var(--line)}
+.thumb .award{position:absolute;right:8px;top:8px;left:auto;max-width:calc(100% - 56px);font-family:var(--f-mono);font-size:11px;line-height:1.35;background:var(--g-method);color:var(--surface);border-radius:3px;padding:1px 6px;text-align:right;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.thumb .ftag{position:absolute;right:8px;top:8px;font-family:var(--f-mono);font-size:11px;background:var(--surface);color:var(--muted);border-radius:3px;padding:0 6px;border:1px dashed var(--muted)}
+.thumb .flower{position:absolute;right:6px;top:6px;width:34px;height:34px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3));transition:transform .25s ease}
+.tile:hover .flower{transform:rotate(36deg) scale(1.08)}
+.fkey{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);margin:0;white-space:nowrap}
+.fbrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 16px}
+.fbrow .status{flex:1 1 320px;min-width:0}
+.filterbar .fkey{margin-top:10px}
+.flower-inline{width:18px!important;height:18px!important}
+.scard.has-award{border-color:var(--g-method);box-shadow:0 0 0 1px var(--g-method)}
+.scard .smeta .saw{font-family:var(--f-mono);font-size:11px;font-weight:500;color:var(--g-method);margin-bottom:2px}
+.mpt.has-award{border:2px solid var(--g-method)}
+.mstar,.awdot{display:grid;place-items:center;width:16px;height:16px;border-radius:50%;background:var(--g-method);color:#fff;font-size:10px;line-height:1}
+.mpt .mstar{position:absolute;left:1px;top:1px;z-index:2}
+.pthumb.has-award{border:2px solid var(--g-method)}
+.thumb .mstar{position:absolute;left:8px;top:8px;z-index:2;width:24px;height:24px;font-size:14px;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.pthumb .mstar{position:absolute;left:4px;top:4px;z-index:2;width:20px;height:20px;font-size:12px}
+.awkey{display:inline-flex;align-items:center;gap:6px;margin-left:14px}
+.scard .sflower{position:absolute;left:-2%;top:-2%;z-index:4;width:34px;height:34px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
+@media (max-width:620px){.scard .sflower{width:26px;height:26px}}
+.flower-inline{display:inline-block;width:22px;height:22px;flex:none}
+.ct{display:inline-block;width:fit-content;font-family:var(--f-mono);font-style:normal;font-size:11px;line-height:1.5;color:var(--accent);border:1px solid var(--accent);border-radius:99px;padding:0 7px;margin-top:4px;white-space:nowrap}
+.pub .v .ct,.dlg .meta .ct{margin:0 0 0 8px;vertical-align:1px}
+.figswitch{position:absolute;left:12px;top:12px;z-index:4;display:flex;border:1px solid var(--line);border-radius:99px;overflow:hidden;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.figswitch button{font:inherit;font-size:13px;border:0;background:none;color:var(--muted);padding:5px 12px;cursor:pointer}
+.figswitch button[aria-pressed="true"]{background:var(--accent);color:var(--surface)}
+.viewbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:10px;margin-bottom:14px}
+.viewbar h3{margin:0}
+.viewswitch{display:flex;border:1px solid var(--line);border-radius:99px;overflow:hidden;background:var(--surface)}
+.viewswitch button{font:inherit;font-size:15px;font-weight:500;border:0;background:none;color:var(--muted);padding:7px 18px;cursor:pointer}
+.viewswitch button:hover:not([aria-pressed="true"]){color:var(--ink);background:var(--soft)}
+.viewswitch button[aria-pressed="true"]{background:var(--accent);color:var(--surface)}
+.pswitch{width:fit-content;margin-top:12px}
+.map{position:relative;width:100%;height:560px;margin-top:8px}
+.map svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.map .hull{fill:var(--soft);stroke:var(--line);stroke-width:1}
+
+.map .clab{position:absolute;z-index:4;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;font-family:var(--f-mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:1px 9px;box-shadow:0 1px 2px rgba(10,20,40,.08)}
+.mpt{all:unset;position:absolute;box-sizing:border-box;width:58px;height:44px;margin:-22px 0 0 -29px;border-radius:4px;overflow:hidden;cursor:pointer;background:#fff;
+  border:1px solid var(--line);box-shadow:0 1px 3px rgba(10,20,40,.18);transition:transform .15s,opacity .15s,box-shadow .15s}
+.mpt .mfig{position:absolute;inset:0}
+.mpt .mflower{position:absolute;right:1px;top:1px;width:16px;height:16px;z-index:2;filter:drop-shadow(0 1px 1px rgba(0,0,0,.3))}
+@media (max-width:620px){.mpt .mflower{width:12px;height:12px}}
+.mpt img,.mpt canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mpt:hover,.mpt:focus-visible{transform:scale(1.9);z-index:5;box-shadow:0 8px 20px -6px rgba(10,20,40,.45)}
+.mpt:focus-visible{outline:2px solid var(--accent)}
+.mpt.dim{opacity:.15}
+.mtip{position:absolute;z-index:6;pointer-events:none;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-size:13px;line-height:1.35;box-shadow:0 6px 18px -8px rgba(10,20,40,.4);max-width:260px}
+.mtip b{font-family:var(--f-display)}
+.mtip span{color:var(--muted);font-size:12px}
+@media (max-width:620px){.map{height:460px}.mpt{width:40px;height:30px;margin:-15px 0 0 -20px}}
+.cap .aw{font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.02em;color:var(--g-method);margin-bottom:2px}
+.tile.has-award{border-color:var(--g-method);box-shadow:0 0 0 1px var(--g-method)}
+.cap{padding:10px 12px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.cap b{font-family:var(--f-display);font-weight:700;font-size:16px;line-height:1.2}
+.cap span{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.cap em{font-style:normal;font-size:13.5px;line-height:1.3;color:var(--ink)}
+.empty{grid-column:1/-1;padding:40px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:var(--r)}
+
+/* publication list */
+.pubs{display:flex;flex-direction:column;gap:34px}
+.pubs h3{font-size:20px;font-weight:700;display:flex;gap:10px;align-items:baseline}
+.pubs h3 small{font-family:var(--f-mono);font-size:12px;color:var(--muted);font-weight:400}
+.pubs ol{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column}
+.pub{display:grid;grid-template-columns:136px minmax(0,1fr);gap:16px;padding:14px 0;border-top:1px solid var(--line);align-items:start}
+.pthumb{all:unset;box-sizing:border-box;cursor:pointer;position:relative;display:block;width:136px;aspect-ratio:4/3;max-width:100%;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:#fff;transition:box-shadow .15s,border-color .15s}
+.pthumb:hover{border-color:var(--muted);box-shadow:0 8px 18px -12px rgba(10,20,40,.45)}
+.pthumb:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pthumb .pfig{position:absolute;inset:0}
+.pthumb img,.pthumb canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:4px;background:#fff}
+.pthumb canvas{padding:0;object-fit:cover}
+.pub .pid{font-family:var(--f-mono);font-size:12.5px;color:var(--muted);padding-top:2px}
+.pub .t{font-weight:600}
+.pub .t button{all:unset;cursor:pointer;color:var(--ink)}
+.pub .t button:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.pub .t button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pub .a{font-size:14.5px;color:var(--muted)}
+.pub .a strong{color:var(--ink);font-weight:600}
+.pub .v{font-size:14.5px;font-style:italic}
+.pub .l{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13.5px;margin-top:3px}
+.badge{font-family:var(--f-mono);font-style:normal;font-size:11px;border-radius:3px;padding:1px 6px;margin-left:8px;background:var(--soft);color:var(--ink);white-space:nowrap}
+.badge.gold{background:var(--g-method);color:var(--surface);white-space:normal;display:inline-block;margin:4px 0 0}
+.dots{display:inline-flex;gap:4px;margin-left:8px;vertical-align:middle}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--c)}
+
+/* modal */
+dialog{border:0;padding:0;border-radius:10px;background:var(--surface);color:var(--ink);width:min(980px,calc(100vw - 32px));max-height:calc(100vh - 48px);box-shadow:0 30px 80px -20px rgba(0,0,0,.5)}
+dialog::backdrop{background:rgba(9,14,24,.6)}
+.dlg{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);max-height:calc(100vh - 48px)}
+.dlg .fig{position:relative;background:var(--soft);min-height:300px}
+.dlg .fig img,.dlg .fig canvas{width:100%;height:100%;object-fit:contain;display:block;position:absolute;inset:0}
+.dlg .fig img{background:#fff}
+.dlg .figcap{position:absolute;left:12px;bottom:10px;right:12px;font-size:12px;color:var(--muted);background:var(--surface);border-radius:4px;padding:3px 8px;width:fit-content;max-width:calc(100% - 24px)}
+.dlg .info{padding:28px 28px 24px;overflow:auto;display:flex;flex-direction:column;gap:14px;min-width:0}
+.dlg h2{font-size:26px;line-height:1.15}
+.dlg .full{font-weight:600;font-size:16px;margin:0}
+.dlg .meta{font-size:14px;color:var(--muted);margin:0}
+.dlg .meta strong{color:var(--ink)}
+.dlg .tags{display:flex;flex-wrap:wrap;gap:6px}
+.dlg .actions{display:flex;flex-wrap:wrap;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:14px;font-weight:500;padding:7px 14px;border-radius:var(--r);border:1px solid var(--line);color:var(--ink);background:var(--surface);text-decoration:none;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.btn:hover{border-color:var(--muted)}
+.related{border-top:1px solid var(--line);padding-top:14px}
+.related ul{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.related button{all:unset;cursor:pointer;display:flex;gap:8px;align-items:center;font-size:13px;line-height:1.25;min-width:0}
+.related button:focus-visible{outline:2px solid var(--accent)}
+.related canvas,.related img{width:52px;height:39px;border-radius:3px;flex:none;object-fit:cover;background:var(--soft)}
+.related button:hover span{color:var(--accent)}
+.x{position:absolute;right:max(12px, env(safe-area-inset-right, 0px));top:12px;z-index:2;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:50%;width:34px;height:34px;font-size:18px;cursor:pointer;line-height:1}
+.nav{display:flex;gap:8px;margin-top:auto;padding-top:6px}
+.support{margin:-24px 0 0;font-size:14px;color:var(--muted);max-width:none}
+footer{border-top:1px solid var(--line);padding-top:18px;font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+
+@media (max-width:860px){
+  .mast,.explore{grid-template-columns:minmax(0,1fr)}
+  .dlg{grid-template-columns:minmax(0,1fr);overflow:auto}
+  .dlg .fig{min-height:0;max-height:none;overflow:visible}
+  .dlg .info{overflow:visible}
+}
+@media (max-width:480px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .cap b{font-size:14px}
+  .finder{margin-left:0;width:100%}.search,.pick{width:100%}.search input,.pick select{width:100%}
+  .related ul{grid-template-columns:1fr}
+  .pub{grid-template-columns:88px minmax(0,1fr);gap:12px}
+  .pthumb{width:88px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* ---------- paper songs ---------- */
+.playall{align-self:center;font:inherit;font-size:14px;font-weight:600;border:0;border-radius:99px;padding:8px 18px;background:var(--accent);color:var(--surface);cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.playall:hover{filter:brightness(1.08)}
+.songlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:20px}
+.scard{display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 18px 14px;transition:border-color .2s,box-shadow .2s}
+.scard.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+/* the record */
+.scard .deck{position:relative;width:86%;margin:0 auto}
+.scard .vinyl{all:unset;display:block;position:relative;width:100%;aspect-ratio:1;border-radius:50%;cursor:pointer;
+  box-shadow:0 10px 24px -12px rgba(10,20,40,.45),0 0 0 1px var(--line)}
+.scard .vinyl:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.scard .disc{position:absolute;inset:0;border-radius:50%;
+  background:repeating-radial-gradient(circle at 50% 50%,#161618 0 1.2px,#2a2a2d 1.2px 2.4px);
+  animation:spin 9s linear infinite;animation-play-state:paused}
+.scard.playing .disc{animation-play-state:running}
+.scard .disc::after{content:"";position:absolute;left:50%;top:50%;width:3.2%;height:3.2%;transform:translate(-50%,-50%);border-radius:50%;background:var(--surface);box-shadow:0 0 0 2px #222;z-index:2}
+@media (prefers-reduced-motion:reduce){.scard .disc{animation:none}}
+.scard .disc .label{position:absolute;inset:5%;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 1.5px #000}
+.scard .disc .label img,.scard .disc .label canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.scard .sp{position:absolute;right:-2%;bottom:0;z-index:4;width:46px;height:46px;border-radius:50%;border:3px solid var(--surface);background:var(--accent);color:var(--surface);font-size:15px;cursor:pointer;display:grid;place-items:center;box-shadow:0 4px 10px -4px rgba(0,0,0,.5)}
+@media (max-width:620px){.songlist{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.scard{padding:12px 10px 10px;gap:8px}
+  .scard .sp{width:36px;height:36px;font-size:12px;border-width:2px}.scard .smeta b{font-size:15px}.scard .smeta em{font-size:12px}.scard .smeta span{font-size:11px}}
+.scard .smeta{min-width:0;display:flex;flex-direction:column;gap:2px;cursor:pointer;text-align:center;align-items:center}
+.scard .smeta:hover .sopen b{color:var(--accent)}
+.scard .smeta b{font-family:var(--f-display);font-size:17px;color:var(--ink)}
+.scard .smeta button{all:unset;cursor:pointer}
+.scard .smeta em{font-style:normal;font-size:13px;color:var(--muted);line-height:1.35}
+.scard .smeta span{font-family:var(--f-mono);font-size:12px;color:var(--muted);margin-top:2px}
+.scard .sbar{align-self:stretch;height:4px;border-radius:2px;background:var(--line);overflow:hidden;margin-top:8px;cursor:pointer}
+.scard .sbar i{display:block;height:100%;width:0;background:var(--accent)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sp.loading{color:transparent!important}
+.sp.loading::after{content:"";position:absolute;inset:11px;border:2.5px solid rgba(255,255,255,.45);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
+.song{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:14px 0 4px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--soft)}
+.song[hidden]{display:none}
+.song .sp{position:relative;flex:none;width:38px;height:38px;border-radius:50%;border:0;background:var(--accent);color:var(--surface);font-size:14px;cursor:pointer;display:grid;place-items:center}
+.song .sp:hover{filter:brightness(1.1)}
+.song .si{flex:1 1 160px;min-width:0;display:flex;flex-direction:column;gap:2px;font-size:13px;color:var(--muted)}
+.song .si b{color:var(--ink);font-size:14px}
+.song .sbar{height:4px;border-radius:2px;background:var(--line);overflow:hidden;margin-top:4px;cursor:pointer}
+.song .sbar i{display:block;height:100%;width:0;background:var(--accent)}
+.song .sl{font:inherit;font-size:13px;background:none;border:1px solid var(--line);border-radius:99px;padding:4px 12px;color:var(--ink);cursor:pointer}
+.dlg .fig{display:flex;flex-direction:column;overflow-y:auto;max-height:calc(100vh - 48px);scrollbar-width:thin;scrollbar-color:var(--muted) var(--soft)}
+.dlg .fig .figsum{padding:24px clamp(20px,3vw,32px) 16px}
+.dlg .fig .figsum p{margin:6px 0 0;font-size:clamp(17px,1.6vw,19px);line-height:1.6;color:var(--ink)}
+.dlg .fig .figsum .eyebrow{font-size:12px}
+.dlg .fig img.sumfig{position:static;width:100%;height:auto;object-fit:contain;margin-top:14px;border:1px solid var(--line);border-radius:6px;background:#fff}
+.dlg .fig .figarea{position:relative;flex:1 0 320px;min-height:320px}
+@media (max-width:700px){.dlg .fig .figsum{padding:20px 18px 12px}.dlg .fig .figsum p{font-size:16.5px;line-height:1.55}.dlg .fig .figarea{flex:none;min-height:0;aspect-ratio:4/3}}
+.song .sly{flex:1 1 100%;margin:4px 0 0;white-space:pre-wrap;font:inherit;font-size:13px;line-height:1.55;color:var(--ink)}
+/* in-page PDF viewer (files stored with the page can't open in a new tab) */
+#vidv{width:min(1200px,calc(100vw - 24px));display:none;flex-direction:column;background:#111}
+#vidv[open]{display:flex}
+#vidv .pv-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface)}
+#vidv .pv-bar b{font-family:var(--f-display);font-size:16px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#vidv .pv-sp{flex:1}
+#vvPlayer{display:block;width:100%;max-height:calc(100vh - 110px);background:#000}
+#lyv{width:min(560px,calc(100vw - 24px));display:none;flex-direction:column}
+#lyv[open]{display:flex}
+#lyv .ly-head{display:flex;align-items:center;gap:12px;padding:16px 16px 12px}
+#lyv .ly-head>div{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+#lyTitle{font-family:var(--f-display);font-size:19px}
+#lySub{font-size:13px;color:var(--muted)}
+#lyv .ly-play{flex:none;width:44px;height:44px;border-radius:50%;border:0;background:var(--accent);color:var(--surface);cursor:pointer;display:grid;place-items:center;font-size:15px}
+#lyv .sbar{flex:none;height:4px;margin:0 16px;border-radius:2px;background:var(--line);overflow:hidden;cursor:pointer}
+#lyv .sbar i{display:block;height:100%;width:0;background:var(--accent)}
+#lyText{flex:1;overflow:auto;margin:0;padding:18px 22px 26px;white-space:pre-wrap;font:inherit;font-size:17px;line-height:1.75;color:var(--ink)}
+.scard .smeta .sbtns{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:8px}
+.scard .smeta .slyr{all:unset;cursor:pointer;font-size:12px;font-weight:600;color:var(--accent);border:1px solid var(--line);border-radius:99px;padding:3px 12px}
+.scard .smeta .spaper{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.scard .smeta .spaper:hover{filter:brightness(1.08)}
+.scard .smeta .slyr:hover{border-color:var(--accent)}
+.scard .smeta .slyr:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#pdfv{width:min(1100px,calc(100vw - 24px));height:calc(100vh - 32px);max-height:none;padding:0;display:none;flex-direction:column}
+#pdfv[open]{display:flex}
+#pdfv .pv-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line)}
+#pdfv .pv-bar b{font-family:var(--f-display);font-size:16px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#pdfv .pv-sp{flex:1}
+#pdfv .pv-pages{flex:1;overflow:auto;background:#525659;padding:16px;display:flex;flex-direction:column;align-items:center;gap:16px}
+#pdfv .pv-pages img{max-width:100%;height:auto;background:#fff;box-shadow:0 4px 18px rgba(0,0,0,.4)}
+</style>
+
+<div class="wrap">
+  <header class="mast">
+    <div>
+      <div class="who"><img class="portrait" src="figures/portrait.jpg?v=2" alt="Photo of Jing Yang" width="100" height="100"><div class="ident">
+        <div class="eyebrow">Human–AI Collaborative Analytics · Data Visualization</div>
+        <h1>Jing Yang</h1>
+        <p class="role">Professor, Department of Machine Learning, University of North Carolina at Charlotte</p>
+      </div></div>
+      <p class="bio">My research helps people make sense of complex data. Today I focus on human–AI collaborative analytics: how people and AI can analyze data together. This builds on two decades of work on visual analytics techniques for many kinds of data, including multidimensional, time-oriented, network and hierarchical, text, trajectory, image and video data, and on core visualization questions such as interaction, insight management, clustering-based approaches, animation and LLM-assisted visualization. With my collaborators and students, I have also conducted design studies in sports, bioinformatics, finance, network security, health and education.</p>
+    </div>
+    <dl class="facts">
+      <dt>Email</dt><dd><span id="email">Jing.Yang at charlotte.edu</span><button class="copy" type="button" id="copyEmail">Copy</button></dd>
+      <dt>Office</dt><dd>Woodward Hall 403E</dd>
+      <dt>Ph.D.</dt><dd>Computer Science, <a href="http://www.wpi.edu/">Worcester Polytechnic Institute</a>, 2005. Advisors <a href="http://www.cs.wpi.edu/~matt/">Matthew O. Ward</a> and <a href="https://davis.wpi.edu/dsrg/MEMBERS/rundenst/">Elke A. Rundensteiner</a></dd>
+      <dt>B.S.</dt><dd>Engineering Mechanics and Computer Science, Tsinghua University, 1997</dd>
+      <dt>Links</dt><dd class="linkrow">
+        <a href="https://scholar.google.com/citations?user=r1jAycQAAAAJ&amp;hl=en">Google Scholar</a>
+        <a href="teaching.html">Teaching</a>
+      </dd>
+    </dl>
+  </header>
+
+  <div class="filterbar" id="filterbar" role="search" aria-label="Filter papers">
+    <div class="finder">
+      <label class="search" for="q"><span class="eyebrow">Search</span><input id="q" type="search" placeholder="Title, author, venue…" autocomplete="off"></label>
+      <label class="pick" for="fData"><span class="eyebrow">Type of data</span><select id="fData"><option value="">All</option></select></label>
+      <label class="pick" for="fArea"><span class="eyebrow">Application area</span><select id="fArea"><option value="">All</option></select></label>
+      <label class="pick" for="fMethod"><span class="eyebrow">Method</span><select id="fMethod"><option value="">All</option></select></label>
+      <label class="pick" for="fVenue"><span class="eyebrow">Venue</span><select id="fVenue"><option value="">All</option></select></label>
+    </div>
+    <div class="fbrow"><div class="status" id="status" aria-live="polite"></div><p class="fkey"><span class="flower-inline" aria-hidden="true"></span>marks papers with 100+ citations on Google Scholar</p></div>
+  </div>
+
+  <section aria-labelledby="h-songs" id="songsSec" hidden>
+    <div class="shead">
+      <div>
+        <h2 id="h-songs">Paper songs <small class="credit">(I made them using Claude and Suno)</small></h2>
+        <p>Songs about the ideas behind some of my papers. Press play on one, or play them all.</p>
+      </div>
+      <button type="button" class="playall" id="playAll"><span aria-hidden="true">▶</span> Play all</button>
+    </div>
+    <div class="songlist" id="songList"></div>
+  </section>
+
+  <section aria-labelledby="h-topics">
+    <div class="shead">
+      <div>
+        <h2 id="h-topics">Research topics</h2>
+        <p id="topicsDesc">Each topic is sized by how many of my publications touch it. Click topics, or use the search and filters, to narrow the map, figures and list; hover a topic to see which topics it travels with.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <section aria-label="Topic cloud and research map" class="topicpanel">
+    <div class="explore">
+      <div class="panel">
+        <div class="viewbar"><h3 id="viewTitle" class="sr-only">Topic cloud</h3>
+          <div class="viewswitch" role="group" aria-label="Choose view"><button type="button" data-view="cloud" aria-pressed="true">Topic cloud</button><button type="button" data-view="map" aria-pressed="false">Research map</button></div></div>
+        <div class="cloud" id="cloud" role="group" aria-label="Research topics"></div>
+        <div class="legend" id="legend"></div>
+        <div id="mapView" hidden><div class="map" id="map"><svg id="mapSvg" aria-hidden="true"></svg><div id="mapPts"></div><div id="mapLabs"></div><div class="mtip" id="mtip" hidden></div></div></div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section aria-labelledby="h-pubs" id="pubsSec">
+    <div class="shead">
+      <div>
+        <h2 id="h-pubs">Publications</h2>
+        <p id="pubsDesc">Click any figure to read about the paper and open it. Switch to List for every publication with full details.</p>
+        <div class="viewswitch pswitch" role="group" aria-label="Choose how to show publications"><button type="button" data-pview="grid" aria-pressed="true">Figures</button><button type="button" data-pview="list" aria-pressed="false">List</button></div>
+      </div>
+    </div>
+    <div id="gridView"><div class="grid" id="grid"></div></div>
+    <div id="listView" hidden><div class="pubs" id="pubs"></div></div>
+  </section>
+
+  <p class="support">My research has been supported by the National Science Foundation, the U.S. Department of Homeland Security, the U.S. Environmental Protection Agency, Google, Bank of America and UNC Charlotte, including the College of Computing and Informatics and Student Affairs.</p>
+
+  <footer>
+    <span>Jing Yang · Department of Machine Learning · UNC Charlotte</span>
+    <span>Built through human–AI collaboration with Claude · Updated October 2026</span>
+  </footer>
+</div>
+
+<dialog id="pdfv" aria-label="Document viewer">
+  <div class="pv-bar"><b id="pvTitle"></b><span class="pv-sp"></span><button class="btn" type="button" id="pvDl" hidden>Download PDF</button><button class="btn" type="button" id="pvClose">Close</button></div>
+  <div class="pv-pages" id="pvPages"></div>
+</dialog>
+
+<dialog id="vidv" aria-labelledby="vvTitle">
+  <div class="pv-bar"><b id="vvTitle"></b><span class="pv-sp"></span><button class="btn" type="button" id="vvClose">Close</button></div>
+  <video id="vvPlayer" controls playsinline preload="metadata"></video>
+</dialog>
+
+<dialog id="lyv" aria-labelledby="lyTitle">
+  <div class="ly-head"><button class="ly-play" type="button" id="lyPlay" aria-label="Play song">▶</button><div><b id="lyTitle"></b><span id="lySub"></span></div><button class="btn" type="button" id="lyClose">Close</button></div>
+  <div class="sbar" id="lyBar" title="Seek"><i></i></div>
+  <pre id="lyText"></pre>
+</dialog>
+
+<dialog id="dlg" aria-labelledby="dTitle">
+  <button class="x" type="button" id="dClose" aria-label="Close">×</button>
+  <div class="dlg">
+    <div class="fig" id="dFig"></div>
+    <div class="info">
+      <div class="eyebrow" id="dEyebrow"></div>
+      <h2 id="dTitle"></h2>
+      <p class="full" id="dFull"></p>
+      <p class="meta" id="dAuthors"></p>
+      <p class="meta" id="dVenue"></p>
+      <div class="tags" id="dTags"></div>
+      <div class="song" id="dSong" hidden></div>
+      <div class="actions" id="dActions"></div>
+      <div class="related" id="dRelated"></div>
+      <div class="nav"><button class="btn" type="button" id="dPrev">← Previous</button><button class="btn" type="button" id="dNext">Next →</button></div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+/* ---------- where real figures live ----------
+   Put one image per paper in a "figures" folder next to this page, named by paper ID:
+   figures/J28.png, figures/C25.jpg, ...  (png, jpg or webp). Missing ones get a drawn placeholder. */
+const FIG_DIR = "figures/";
+const FIG_EXT = ["jpg","png","webp"];
+const BASE = "https://webpages.charlotte.edu/jyang13/";
+/* PDFs now stored in papers/ on the new site; the claude.ai preview can't hold them all, so there it opens the old UNCC copy */
+const OLD_PDF = {
+  "papers/TrajGraph.pdf":"papers/TrajGraph.pdf",
+  "papers/TextPioneer.pdf":"papers/TextPioneerTKDE.pdf",
+  "papers/VAET.pdf":"papers/vaet_vast.pdf",
+  "papers/TenniVis.pdf":"papers/TenniVis_InfoVis2014.pdf",
+  "papers/WaveMap.pdf":"papers/WaveMap.pdf",
+  "papers/Regression-Modeling.pdf":"papers/EPA.pdf",
+  "papers/Spot-Tracking-Lens.pdf":"papers/SpotTrackingLens.pdf",
+  "papers/Taxi-Themes.pdf":"papers/TaxiTopics_PacifiVis2014.pdf",
+  "papers/Entropy-Measures.pdf":"papers/entropy.pdf",
+  "papers/Common-Ground.pdf":"papers/chenInsight2011.pdf",
+  "papers/STREAMIT.pdf":"papers/streamitPacificVis.pdf",
+  "papers/Click2Annotate.pdf":"LMDV/papers/click2annotate.pdf",
+  "papers/Insight-Management.pdf":"LMDV/papers/insightmanagement.pdf",
+  "papers/Visual-Explanation.pdf":"LMDV/papers/vast/mve.pdf",
+  "papers/WireVis.pdf":"LMDV/papers/wirevis.pdf",
+  "papers/Semantic-Image-Browser.pdf":"LMDV/papers/vast06/image.pdf",
+  "papers/VaR-Display.pdf":"LMDV/papers/infoVis/infovis_2004.pdf",
+  "papers/Interaction-Spaces.pdf":"LMDV/papers/vissym/vissym_2004.pdf",
+  "papers/DOSFA.pdf":"LMDV/papers/infoVis/infovis_2003.pdf",
+  "papers/VHDR.pdf":"LMDV/papers/vissym/vissym_2003.pdf",
+  "papers/InterRing.pdf":"LMDV/papers/infoVis/infovis_2002.pdf",
+  "papers/Hierarchical-Exploration.pdf":"LMDV/papers/others/datavis.pdf",
+  "papers/XmdvTool.pdf":"LMDV/papers/others/sigmod_demo.pdf",
+  "papers/Stream-Text-Keywords.pdf":"LMDV/papers/streamposter.pdf"
+};
+
+const GROUPS = {
+  data:  {label:"Data types",          v:"--g-data"},
+  domain:{label:"Application domains", v:"--g-domain"},
+  method:{label:"Techniques",          v:"--g-method"},
+  ai:    {label:"AI & modeling",       v:"--g-ai"}
+};
+const TOPICS = {
+  highdim:["High-dimensional data","data"], hier:["Hierarchies","data"], text:["Text & documents","data"],
+  time:["Time series","data"], traj:["Trajectories","data"], geo:["Geospatial","data"], graph:["Trees & graphs","data"],
+  categorical:["Categorical data","data"], stream:["Streaming data","data"], video:["Images & video","data"], events:["Events","data"], timedata:["Time-oriented data","data"],
+  urban:["Urban mobility","domain"], sports:["Sports analytics","domain"], bio:["Bioinformatics","domain"], health:["Environmental health","domain"], earth:["Earth science","domain"],
+  finance:["Finance & fraud","domain"], security:["Cyber security","domain"], news:["News & media","domain"], social:["Social & idea flow","domain"],
+  nutrition:["Precision nutrition","domain"], edu:["Education","domain"], sustain:["Sustainable buildings","domain"],
+  interaction:["Interaction","method"], insight:["Insight management","method"], collab:["Collaborative analytics","method"],
+  clustering:["Clustering-based vis","method"], animation:["Animation","method"], lens:["Lenses & zooming","method"], query:["Visual query","method"],
+  eval:["Evaluation","method"], design:["Design study","method"], clutter:["Clutter reduction","method"], multires:["Multi-resolution","method"],
+  ml:["Machine learning","ai"], xai:["Explainable AI","ai"], semantic:["Semantic analysis","ai"], guidance:["Guidance","ai"],
+  privacy:["Differential privacy","ai"], topicmodel:["Topic modeling","ai"]
+};
+const TYPES = {J:"Journal articles", C:"Conference papers", B:"Books & book chapters", A:"Extended abstracts", P:"Posters"};
+const TYPE1 = {J:"Journal article", C:"Conference paper", B:"Book chapter", A:"Extended abstract", P:"Poster"};
+
+const P = (id,short,title,authors,venue,vs,year,topics,links={},extra={}) => ({id,type:id[0],short,title,authors,venue,vs,year,topics,links,...extra});
+const PAPERS = [
+P("J29","VivaRoutes","Visualizing Routes With AI-Discovered Street-View Patterns","Tsung Heng Wu, Md Amiruzzaman, Ye Zhao, Deepshikha Bhati, Jing Yang","IEEE Transactions on Computational Social Systems 11(5): 6380–6391","IEEE TCSS",2024,["traj","video","urban","ml","geo"],{paper:"https://ieeexplore.ieee.org/abstract/document/10504858"},{sub:"Street-view driving routes"}),
+P("J28","EVis","EVis: Visually Analyzing Environmentally Driven Events","Tinghao Feng, Jing Yang, Martha-Cary Eppes, Zhaocong Yang, Faye Moser","IEEE Transactions on Visualization and Computer Graphics 28(1): 912–921","IEEE TVCG",2022,["time","highdim","earth","design","timedata"],{paper:"https://ieeexplore.ieee.org/abstract/document/9552869",vid:"videos/EVis.mp4"},{sub:"Condition–event relations in high-dimensional time series"}),
+P("J27","QuteVis","QuteVis: Visually Studying Transportation Patterns Using Multisketch Query of Joint Traffic Situations","Shamal Al-Dohuki, Ye Zhao, Farah Kamw, Jing Yang, Xinyue Ye, Wei Chen","IEEE Computer Graphics and Applications 41(2): 35–48","IEEE CG&A",2021,["traj","urban","geo"],{paper:"https://ieeexplore.ieee.org/abstract/document/8691491"}),
+P("J26","GeoVisuals","GeoVisuals: A Visual Analytics Approach to Leverage the Potential of Spatial Videos and Associated Geonarratives","Suphanut Jamonnak, Ye Zhao, Andrew Curtis, Shamal Al-Dohuki, Xinyue Ye, Farah Kamw, Jing Yang","International Journal of Geographical Information Science 34(11): 2115–2135","IJGIS",2020,["geo","text","urban","video","design"],{paper:"https://www.tandfonline.com/doi/abs/10.1080/13658816.2020.1737700"}),
+P("J25","GTMapLens","GTMapLens: Interactive Lens for Geo-Text Data Browsing on Map","Chao Ma, Ye Zhao, Shamal Al-Dohuki, Jing Yang, Xinyue Ye, Farah Kamw, Md Amiruzzaman","Computer Graphics Forum 39(3): 469–481","CGF",2020,["geo","text","interaction","lens"],{paper:"https://onlinelibrary.wiley.com/doi/full/10.1111/cgf.13995"}),
+P("J24","CLEVis","CLEVis: A Semantic Driven Visual Analytics System for Community Level Events","Chao Ma, Ye Zhao, Andrew Curtis, Farah Kamw, Shamal Al-Dohuki, Jing Yang, Suphanut Jamonnak, Ismael Ali","IEEE Computer Graphics and Applications 41(2): 49–62","IEEE CG&A",2020,["events","text","geo","design","timedata"],{paper:"https://ieeexplore.ieee.org/abstract/document/8999535"}),
+P("J23","CourtTime","CourtTime: Generating Actionable Insights into Tennis Matches Using Visual Analytics","Tom Polk, Dominik Jäckle, Johannes Häußler, Jing Yang","IEEE Transactions on Visualization and Computer Graphics 26(1): 397–406","IEEE TVCG",2019,["sports","design","time","timedata"],{paper:"https://ieeexplore.ieee.org/abstract/document/8795584"}),
+P("J22","Urban Accessibility","Urban Structure Accessibility Modeling and Visualization for Joint Spatiotemporal Constraints","Farah Kamw, Shamal Al-Dohuki, Ye Zhao, Thomas Eynon, David Sheets, Jing Yang, Xinyue Ye, Wei Chen","IEEE Transactions on Intelligent Transportation Systems 21(1): 104–116","IEEE T-ITS",2019,["urban","geo","traj"],{paper:"https://ieeexplore.ieee.org/abstract/document/8613864"}),
+P("J21","Parallel Sets Clutter","An Association Rule Based Approach to Reducing Visual Clutter in Parallel Sets","Chong Zhang, Yang Chen, Jing Yang, Zhengcong Yin","Visual Informatics 3(1): 48–57","Visual Informatics",2019,["categorical","ml"],{paper:"https://doi.org/10.1016/j.visinf.2019.03.006"}),
+P("J20","Analytic Guidance","Guidance in the Human–Machine Analytics Process","Christopher Collins, Natalia Andrienko, Tobias Schreck, Jing Yang, Jaegul Choo, Ulrich Engelke, Amit Jena, Tim Dwyer","Visual Informatics 2(3): 166–180","Visual Informatics",2018,["ml","interaction","eval"],{paper:"https://www.sciencedirect.com/science/article/pii/S2468502X1830041X"}),
+P("J19","SemanticTraj","SemanticTraj: A New Approach to Interacting with Massive Taxi Trajectories","Shamal Al-Dohuki, Farah Kamw, Ye Zhao, Chao Ma, Yingyu Wu, Jing Yang, Xinyue Ye, Fei Wang, Xin Li, Wei Chen","IEEE Transactions on Visualization and Computer Graphics 23(1): 11–20","IEEE TVCG",2017,["traj","urban","interaction","semantic"],{paper:"https://doi.org/10.1109/TVCG.2016.2598416",video:"https://www.youtube.com/watch?v=Q-MyhZlwEbM"}),
+P("J18","TrajGraph","TrajGraph: A Graph-Based Visual Analytics Approach to Studying Urban Network Centralities Using Taxi Trajectory Data","Xiaoke Huang, Ye Zhao, Jing Yang, Chong Zhang, Chao Ma, Xinyue Ye","IEEE Transactions on Visualization and Computer Graphics 22(1): 160–169","IEEE TVCG",2016,["traj","graph","urban","design"],{pdf:"papers/TrajGraph.pdf",vid:"videos/TrajGraph.mp4"}),
+P("J17","TextPioneer","Exploring Topical Lead-Lag across Corpora","Shixia Liu, Yang Chen, Hao Wei, Jing Yang, Kun Zhou, Steven M. Drucker","IEEE Transactions on Knowledge and Data Engineering 27(1): 115–129","IEEE TKDE",2015,["text","ml","timedata","design"],{paper:"https://doi.org/10.1109/TKDE.2014.2324581",pdf:"papers/TextPioneer.pdf",vid:"videos/TextPioneer.mp4"}),
+P("J16","VAET","VAET: A Visual Analytics Approach for E-transactions Time-series","Cong Xie, Wei Chen, Xinxin Huang, Yueqi Hu, Scott Barlowe, Jing Yang","IEEE Transactions on Visualization and Computer Graphics 20(12): 1743–1752","IEEE TVCG",2014,["time","finance","ml","timedata"],{paper:"https://doi.org/10.1109/TVCG.2014.2346913",pdf:"papers/VAET.pdf",vid:"videos/VAET.mp4"}),
+P("J15","TenniVis","TenniVis: Visualization for Tennis Match Analysis","Tom Polk, Jing Yang, Yueqi Hu, Ye Zhao","IEEE Transactions on Visualization and Computer Graphics 20(12): 2339–2348","IEEE TVCG",2014,["sports","time","timedata","design"],{paper:"https://doi.org/10.1109/TVCG.2014.2346445",pdf:"papers/TenniVis.pdf",vid:"videos/TenniVis.mp4"},{figs:[["J15","Score-sheet view"],["J15-2","Full interface"]]}),
+P("J14","PIWI","PIWI: Visually Exploring Graphs Based on Their Community Structure","Jing Yang, Yujie Liu, Xin Zhang, Xiaoru Yuan, Ye Zhao, Scott Barlowe, Shixia Liu","IEEE Transactions on Visualization and Computer Graphics 19(6): 1034–1047","IEEE TVCG",2013,["graph","clustering","interaction"],{paper:"https://doi.org/10.1109/TVCG.2012.172",vid:"videos/PIWI.mp4"}),
+P("J13","Clustering-Vis Study","Evaluating Exploratory Visualization Systems: A User Study on How Clustering-Based Visualization Systems Support Information Seeking from Large Document Collections","Yujie Liu, Scott Barlowe, Yaqing Feng, Jing Yang, Min Jiang","Information Visualization 12(1): 25–43","Information Visualization",2013,["eval","clustering","text"],{paper:"https://doi.org/10.1177/1473871612459995"},{figNote:"Illustration of the study design and findings, drawn for this page. Not a figure from the paper."}),
+P("J12","ManyInsights","ManyInsights: A Visual Analytics Approach to Supporting Effective Insight Management","Chen Yang, Jing Yang","Tsinghua Science and Technology 18(2): 171–181","Tsinghua Sci. & Tech.",2013,["insight","interaction","highdim"],{paper:"https://doi.org/10.1109/TST.2013.6509100"}),
+P("J11","Streaming Text","Real-Time Visualization of Streaming Text with a Force-Based Dynamic System","Jamal Alsakran, Yang Chen, Dongning Luo, Ye Zhao, Jing Yang, Wenwen Dou, Shixia Liu","IEEE Computer Graphics and Applications 32(1): 34–45","IEEE CG&A",2012,["text","animation","timedata","semantic"],{paper:"https://doi.org/10.1109/MCG.2011.91",pdf:"papers/Streaming-Text.pdf",vid:"videos/Streaming-Text.mp4?v=2"},{figs:[["J11","Clusters over time"],["J11-2","Interface"]]}),
+P("J10","EventRiver","EventRiver: Visually Exploring Text Collections with Temporal References","Dongning Luo, Jing Yang, Milos Krstajic, William Ribarsky, Daniel A. Keim","IEEE Transactions on Visualization and Computer Graphics 18(1): 93–105","IEEE TVCG",2012,["text","events","news","clustering","timedata","semantic"],{paper:"https://doi.org/10.1109/TVCG.2010.225",vid:"videos/EventRiver.mp4"},{figs:[["J10","Event river"],["J10-2","Search & ShoeBox"]]}),
+P("J9","WaveMap","WaveMap: A Visual Analytics Approach for Feature Discovery in Complex Computational Biology Datasets","Scott Barlowe, Yujie Liu, Jing Yang, Dennis R. Livesay, Donald J. Jacobs, James Mottonen, Deeptak Verma","Computer Graphics Forum 30(3): 1001–1010","CGF",2011,["bio","highdim","interaction","design","lens"],{pdf:"papers/WaveMap.pdf",vid:"videos/WaveMap.mp4"}),
+P("J8","Newdle","Newdle: Interactive Visual Exploration of Large Online News Collections","Jing Yang, Dongning Luo, Yujie Liu","IEEE Computer Graphics and Applications 30(5): 32–41","IEEE CG&A",2010,["news","text","clustering"],{paper:"https://doi.org/10.1109/MCG.2010.93"}),
+P("J7","Microarray Time Series","Interactive Visual Analysis of Time-Series Microarray Data","Dong Hyun Jeong, Alireza Darvish, Kayvan Najarian, Jing Yang, William Ribarsky","The Visual Computer 24(12): 1053–1066","The Visual Computer",2008,["bio","time","highdim"],{paper:"https://doi.org/10.1007/s00371-007-0205-9"}),
+P("J6","WireVis Journal","Scalable and Interactive Visual Analysis of Financial Wire Transactions for Fraud Detection","Remco Chang, Alvin Lee, Mohammad Ghoniem, Robert Kosara, William Ribarsky, Jing Yang, Evan Suma, Caroline Ziemkiewicz, Daniel Kern, Agus Sudjianto","Information Visualization 7(1): 63–76","Information Visualization",2008,["finance","categorical","time","design"],{paper:"https://doi.org/10.1057/palgrave.ivs.9500172"}),
+P("J5","News Video Retrieval","Integrating Multi-Modal Content Analysis and Hyperbolic Visualization for Large-Scale News Videos Retrieval and Exploration","Hangzai Luo, Jianping Fan, Shin'ichi Satoh, Jing Yang, William Ribarsky","Signal Processing: Image Communication 23(7): 538–553","Signal Proc.: Image Comm.",2008,["video","news","ml"],{paper:"https://doi.org/10.1016/j.image.2008.04.014"}),
+P("J4","Value & Relation Display","Value and Relation Display: Interactive Visual Exploration of Large Datasets with Hundreds of Dimensions","Jing Yang, Daniel Hubball, Matthew O. Ward, Elke A. Rundensteiner, William Ribarsky","IEEE Transactions on Visualization and Computer Graphics 13(3): 494–507","IEEE TVCG",2007,["highdim","interaction"],{paper:"https://doi.org/10.1109/TVCG.2007.1010",vid:"videos/Value-Relation-Display.mp4"}),
+P("J3","Abstraction Quality","Measuring Data Abstraction Quality in Multiresolution Visualization","Qingguang Cui, Matthew O. Ward, Elke A. Rundensteiner, Jing Yang","IEEE Transactions on Visualization and Computer Graphics 12(5): 709–716","IEEE TVCG",2006,["multires","highdim","eval"],{pdf:"http://davis.wpi.edu/~xmdv/docs/infovis06_measure.pdf"},{figNote:"Illustration of the paper's idea, drawn for this page with synthetic data. Not a figure from the paper."}),
+P("J2","Hierarchical Displays","Interactive Hierarchical Displays: A General Framework for Visualization and Exploration of Large Multivariate Data Sets","Jing Yang, Matthew O. Ward, Elke A. Rundensteiner","Computers & Graphics 27(2): 265–283","Computers & Graphics",2003,["highdim","multires","clustering"],{paper:"http://www.sciencedirect.com/science/article/pii/S0097849302002832"},{figs:[["J2","Glyphs"],["J2-2","Scatterplot matrix"]]}),
+P("J1","InterRing","InterRing: A Visual Interface for Navigating and Manipulating Hierarchies","Jing Yang, Matthew O. Ward, Elke A. Rundensteiner, Anilkumar Patro","Information Visualization 2(1): 16–30","Information Visualization",2003,["interaction","graph"],{paper:"http://ivi.sagepub.com/content/2/1/16.short"}),
+
+P("C27","Differentially Private Visualization","Rethinking Utility in Differentially Private Visualization: A Channel-Centric Perspective","Jing Yang, Sarayu Pacca, Zhaocong Yang, Liyue Fan","IEEE VIS 2026","IEEE VIS",2026,["privacy","eval"],{},{note:"To appear",figNote:"Illustration of the paper's idea, drawn for this page. Not a figure from the paper."}),
+P("C26","CatViz","Easy Interpretation of Image Classification Results with Feature-Level Visualization","Deepshikha Bhati, Ye Zhao, Tsung-Heng Wu, Md Amiruzzaman, Jing Yang","Proceedings of Electronic Imaging, pp. 349-1–349-13, March 2026","Electronic Imaging",2026,["xai","ml","video"],{paper:"https://doi.org/10.2352/EI.2026.38.1.VDA-349",vid:"videos/CatViz.mp4"},{award:"Kostas Pantazos Memorial Award for Outstanding Paper in Visualization and Data Analysis",awardShort:"Outstanding Paper Award"}),
+P("C25","TimePool","TimePool: Visually Answer “Which and When” Questions on Univariate Time Series","Tinghao Feng, Yueqi Hu, Jing Yang, Tom Polk, Ye Zhao, Shixia Liu, Zhaocong Yang","IEEE Visualization and Visual Analytics (VIS) 2023, pp. 201–205","IEEE VIS",2023,["time","interaction"],{paper:"https://doi.org/10.1109/VIS54172.2023.00049",vid:"videos/TimePool.mp4"},{figs:[["C25","Compare to a focal"],["C25-2","Find high variance"]]}),
+P("C24","TrajAnalytics","An Open Source TrajAnalytics Software for Modeling, Transformation and Visualization of Urban Trajectory Data","Shamal Al-Dohuki, Farah Kamw, Ye Zhao, Xinyue Ye, Jing Yang, Suphanut Jamonnak","IEEE Intelligent Transportation Systems Conference (ITSC) 2019, pp. 150–155","IEEE ITSC",2019,["traj","urban"],{paper:"https://ieeexplore.ieee.org/abstract/document/8917058"}),
+P("C23","Accessibility Clusters","Visually Analyzing Latent Accessibility Clusters of Urban POIs","Farah Kamw, Shamal Al-Dohuki, Ye Zhao, Jing Yang, Xinyue Ye, Wei Chen","EuroVis Workshop on Visual Analytics (EuroVA) 2019","EuroVA",2019,["urban","clustering","geo"],{pdf:"https://par.nsf.gov/servlets/purl/10109689"},{figs:[["C23","Clusters & reach"],["C23-2","Exploring clusters on the map"]]}),
+P("C22","Idea Flow","How Ideas Flow across Multiple Social Groups","Xiting Wang, Shixia Liu, Yang Chen, Tai-Quan Peng, Jing Su, Jing Yang, Baining Guo","IEEE Conference on Visual Analytics Science and Technology (VAST) 2016, pp. 51–60","IEEE VAST",2016,["text","topicmodel","ml"],{pdf:"http://shixialiu.com/publications/IdeaFlow_VAST/paper.pdf",video:"http://shixialiu.com/publications/IdeaFlow_VAST/video.mp4"}),
+P("C21","Threat Intel Sharing","Strategic Cyber Threat Intelligence Sharing: A Case Study of IDS Logs","Spike E. Dog, Alex Tweed, LeRoy Rouse, Bill Chu, Duan Qi, Yueqi Hu, Jing Yang, Ehab Al-Shaer","International Conference on Computer Communication and Networks (ICCCN) 2016, pp. 1–6","ICCCN",2016,["security","time","design"],{paper:"https://doi.org/10.1109/ICCCN.2016.7568578"}),
+P("C20","Regression Modeling","A Visual Analytics Approach to High-Dimensional Logistic Regression Modeling and its Application to an Environmental Health Study","Chong Zhang, Jing Yang, F. Benjamin Zhan, Xi Gong, Jean D. Brender, Peter H. Langlois, Scott Barlowe, Ye Zhao","IEEE Pacific Visualization Symposium 2016, pp. 136–143","IEEE PacificVis",2016,["health","highdim","ml","design"],{pdf:"papers/Regression-Modeling.pdf",vid:"videos/Regression-Modeling.mp4"}),
+P("C19","Spot-Tracking Lens","Spot-Tracking Lens: A Zoomable User Interface for Animated Bubble Charts","Yueqi Hu, Tom Polk, Jing Yang, Ye Zhao, Shixia Liu","IEEE Pacific Visualization Symposium 2016, pp. 16–23","IEEE PacificVis",2016,["animation","lens","interaction","time"],{pdf:"papers/Spot-Tracking-Lens.pdf",vid:"videos/Spot-Tracking-Lens.mp4",vid2:"videos/Spot-Tracking-Lens-2.mp4",vid2Label:"Scrolling video"}),
+P("C18","Taxi Themes","Visualizing Hidden Themes of Taxi Movement with Semantic Transformation","Ding Chu, David A. Sheets, Ye Zhao, Yingyu Wu, Jing Yang, Maogong Zheng, George Chen","IEEE Pacific Visualization Symposium 2014, pp. 137–144","IEEE PacificVis",2014,["traj","urban","topicmodel","semantic"],{pdf:"papers/Taxi-Themes.pdf"}),
+P("C17","Entropy Measures","Using Entropy-Related Measures in Categorical Data Visualization","Jamal Alsakran, Xiaoke Huang, Ye Zhao, Jing Yang, Karl Fast","IEEE Pacific Visualization Symposium 2014, pp. 81–88","IEEE PacificVis",2014,["categorical","highdim"],{pdf:"papers/Entropy-Measures.pdf"}),
+P("C16","Protein Subspaces","A Visual Analytics Approach to Exploring Protein Flexibility Subspaces","Scott Barlowe, Jing Yang, Donald J. Jacobs, Dennis R. Livesay, Jamal Alsakran, Ye Zhao, Deeptak Verma, James Mottonen","IEEE Pacific Visualization Symposium 2013, pp. 193–200","IEEE PacificVis",2013,["bio","highdim","design"],{paper:"https://doi.org/10.1109/PacificVis.2013.6596145"}),
+P("C15","Common Ground","Supporting Effective Common Ground Construction in Asynchronous Collaborative Visual Analytics","Yang Chen, Jamal Alsakran, Scott Barlowe, Jing Yang, Ye Zhao","IEEE Conference on Visual Analytics Science and Technology (VAST) 2011, pp. 101–110","IEEE VAST",2011,["collab","insight"],{pdf:"papers/Common-Ground.pdf",vid:"videos/Common-Ground.mp4"}),
+P("C14","STREAMIT","STREAMIT: Dynamic Visualization and Interactive Exploration of Text Streams","Jamal Alsakran, Yang Chen, Ye Zhao, Jing Yang, Dongning Luo","IEEE Pacific Visualization Symposium 2011, pp. 131–138","IEEE PacificVis",2011,["text","animation","clustering","timedata"],{pdf:"papers/STREAMIT.pdf",vid:"videos/STREAMIT.mp4?v=2"},{figs:[["C14","Clusters over time"],["C14-2","Interface"]]}),
+P("C13","Click2Annotate","Click2Annotate: Automated Insight Externalization with Rich Semantics","Yang Chen, Scott Barlowe, Jing Yang","IEEE Conference on Visual Analytics Science and Technology (VAST) 2010, pp. 155–162","IEEE VAST",2010,["insight","interaction","semantic"],{pdf:"papers/Click2Annotate.pdf"}),
+P("C12","Insight Management","Toward Effective Insight Management in Visual Analytics Systems","Yang Chen, Jing Yang, William Ribarsky","IEEE Pacific Visualization Symposium 2009, pp. 49–56","IEEE PacificVis",2009,["insight"],{pdf:"papers/Insight-Management.pdf"},{figNote:"Illustration of the paper's ideas, drawn for this page. Not a figure from the paper."}),
+P("C11","Visual Explanation","Multivariate Visual Explanation for High Dimensional Datasets","Scott Barlowe, Tianyi Zhang, Yujie Liu, Jing Yang, Donald J. Jacobs","IEEE Symposium on Visual Analytics Science and Technology (VAST) 2008, pp. 147–154","IEEE VAST",2008,["highdim","ml"],{pdf:"papers/Visual-Explanation.pdf"}),
+P("C10","NewsLab","NewsLab: Exploratory Broadcast News Video Analysis","Mohammad Ghoniem, Dongning Luo, Jing Yang, William Ribarsky","IEEE Symposium on Visual Analytics Science and Technology (VAST) 2007, pp. 123–130","IEEE VAST",2007,["news","video","timedata","lens"],{pdf:"http://viscenter.uncc.edu/sites/viscenter.uncc.edu/files/CVC-UNCC-07-11.pdf"}),
+P("C9","News Video Mining","Analyzing Large-Scale News Video Databases for Supporting Knowledge Visualization and Intuitive Retrieval","Hangzai Luo, Jianping Fan, Jing Yang, William Ribarsky, Shin'ichi Satoh","IEEE Symposium on Visual Analytics Science and Technology (VAST) 2007, pp. 107–114","IEEE VAST",2007,["video","news","semantic"],{paper:"https://doi.org/10.1109/VAST.2007.4389003"}),
+P("C8","WireVis","WireVis: Visualization of Categorical, Time-Varying Data From Financial Transactions","Remco Chang, Mohammad Ghoniem, Robert Kosara, William Ribarsky, Jing Yang, Evan Suma, Caroline Ziemkiewicz, Daniel Kern, Agus Sudjianto","IEEE Symposium on Visual Analytics Science and Technology (VAST) 2007, pp. 155–162","IEEE VAST",2007,["finance","categorical","time"],{pdf:"papers/WireVis.pdf"}),
+P("C7","Semantic Image Browser","Semantic Image Browser: Bridging Information Visualization with Automated Intelligent Image Analysis","Jing Yang, Jianping Fan, Daniel Hubball, Yuli Gao, Hangzai Luo, William Ribarsky, Matthew Ward","IEEE Symposium on Visual Analytics Science and Technology (VAST) 2006, pp. 191–198","IEEE VAST",2006,["video","semantic","highdim","interaction"],{pdf:"papers/Semantic-Image-Browser.pdf",vid:"videos/Semantic-Image-Browser.mp4"},{figs:[["C7","Overview & drill-down"],["C7-2","Ranking & annotation"]]}),
+P("C6","Video News Explorer","Exploring Large-Scale Video News via Interactive Visualization","Hangzai Luo, Jianping Fan, Jing Yang, William Ribarsky, Shin'ichi Satoh","IEEE Symposium on Visual Analytics Science and Technology (VAST) 2006, pp. 75–82","IEEE VAST",2006,["video","news","interaction","ml"],{paper:"https://doi.org/10.1109/VAST.2006.261433"}),
+P("C5","VaR Display","Value and Relation Display for Interactive Exploration of High Dimensional Datasets","Jing Yang, Anilkumar Patro, Huang Shiping, Nishant Mehta, Matthew O. Ward, Elke A. Rundensteiner","IEEE Symposium on Information Visualization (InfoVis) 2004, pp. 73–80","IEEE InfoVis",2004,["highdim","interaction"],{pdf:"papers/VaR-Display.pdf"}),
+P("C4","Interaction Spaces","Interaction Spaces in Data and Information Visualization","Matthew O. Ward, Jing Yang","Eurographics/IEEE TCVG Symposium on Visualization (VisSym) 2004, pp. 137–146","VisSym",2004,["interaction"],{pdf:"papers/Interaction-Spaces.pdf"}),
+P("C3","DOSFA","Interactive Hierarchical Dimension Ordering, Spacing and Filtering for Exploration of High Dimensional Datasets","Jing Yang, Wei Peng, Matthew O. Ward, Elke A. Rundensteiner","IEEE Symposium on Information Visualization (InfoVis) 2003, pp. 105–112","IEEE InfoVis",2003,["highdim","interaction","clustering"],{pdf:"papers/DOSFA.pdf"},{award:"IEEE InfoVis 20-Year Test of Time Award (presented at IEEE VIS 2023)",awardShort:"20-Year Test of Time Award"}),
+P("C2","VHDR","Visual Hierarchical Dimension Reduction for Exploration of High Dimensional Datasets","Jing Yang, Matthew O. Ward, Elke A. Rundensteiner","Eurographics/IEEE TCVG Symposium on Visualization (VisSym) 2003, pp. 19–28","VisSym",2003,["highdim","interaction","clustering"],{pdf:"papers/VHDR.pdf"},{figTag:"Illustration",figNote:"Illustration of the VHDR idea, drawn for this page with synthetic data. Not a figure from the paper."}),
+P("C1","InterRing","InterRing: An Interactive Tool for Visually Navigating and Manipulating Hierarchical Structures","Jing Yang, Matthew O. Ward, Elke A. Rundensteiner","IEEE Symposium on Information Visualization (InfoVis) 2002, pp. 77–84","IEEE InfoVis",2002,["interaction","graph"],{pdf:"papers/InterRing.pdf"}),
+
+P("B3","Multivariate Networks","Novel Visual Metaphors for Multivariate Networks","Jonathan C. Roberts, Jing Yang, Oliver Kohlbacher, Matthew O. Ward, Michelle X. Zhou","Multivariate Network Visualization, LNCS 8380, pp. 127–150, A. Kerren, H. C. Purchase, M. O. Ward (eds.), Springer","Springer LNCS",2014,["graph","highdim"],{paper:"https://doi.org/10.1007/978-3-319-06793-3_7"}),
+P("B2","Dimension Management","A Dimension Management Framework for High Dimensional Visualization","Jing Yang, Scott Barlowe","Advances in Information and Intelligent Systems, pp. 267–288, Z. Ras and W. Ribarsky (eds.), Springer","Springer",2009,["highdim","interaction"],{paper:"https://doi.org/10.1007/978-3-642-04141-9_13"}),
+P("B1","Hierarchical Exploration","Hierarchical Exploration of Large Multivariate Data Sets","Jing Yang, Matthew O. Ward, Elke A. Rundensteiner","Data Visualization: The State of the Art 2003, pp. 201–212, F. Post, G. Nielson, G.-P. Bonneau (eds.)","State of the Art",2003,["highdim","multires","clustering"],{pdf:"papers/Hierarchical-Exploration.pdf"}),
+
+P("A7","MetaboFood","The Metabolome of Food Knowledge Database: Development of a Nutrition Database to Support Precision Nutrition","Colin Kay, Aleksandr Smirnov, Jessica Everhart, Harry Schulz, Ciara Conway, Zhaocong Yang, Jing Yang, Xiuxia Du","Nutrition 2022","Nutrition",2022,["nutrition","bio","health"],{paper:"https://scholar.google.com/citations?view_op=view_citation&hl=en&user=r1jAycQAAAAJ&sortby=pubdate&citation_for_view=r1jAycQAAAAJ:eflP2zaiRacC"},{figs:[["A7","Foods → compounds → health"],["A7-2","Knowledge-graph Sankey"]],figNote:"The first view is an illustration of the database's idea, drawn for this page. Not a figure from the paper."}),
+P("A2","Touch2Annotate","Touch2Annotate: Generating Better Annotations with Less Human Effort on Multi-Touch Interfaces","Yang Chen, Jing Yang, Scott Barlowe, Dong H. Jeong","CHI 2010 Extended Abstracts, pp. 3703–3708","CHI EA",2010,["insight","interaction","highdim"],{paper:"https://doi.org/10.1145/1753846.1754042"}),
+P("A1","XmdvTool","XmdvTool: Visual Interactive Data Exploration and Trend Discovery of High-Dimensional Data Sets","Elke A. Rundensteiner, Matthew O. Ward, Jing Yang, Punit R. Doshi","Proc. ACM SIGMOD 2002, p. 631","SIGMOD demo",2002,["highdim","interaction"],{pdf:"papers/XmdvTool.pdf"}),
+
+P("P7","Bioreactor Carbon","Visualizing Multivariate Time Series Data in a Biological Input and Output System","Julia Husar, Jing Yang, Kyoung-Hee Kim","IEEE VIS 2025","IEEE VIS",2025,["time","highdim","sustain","design"],{summary:"papers/P7-summary.pdf",poster:"papers/P7-poster.pdf"},{sub:"CO₂ input/output of microalgae bioreactors"}),
+P("P5","CateDocs","CateDocs: A New Visual Analytics Approach to Exploring High Dimensional Categorical Datasets","Yueqi Hu, Xiaoke Huang, Chong Zhang, Yingyu Wu, Jing Yang, Ye Zhao, Scott Barlowe, Wei Chen","IEEE VAST 2013","IEEE VAST",2013,["categorical","highdim","text","topicmodel","ml"],{summary:"papers/P5-summary.pdf",poster:"papers/P5-poster.pdf"}),
+P("P1","Stream Text Keywords","Visual Analysis of Stream Texts with Keyword Significance","Jamal Alsakran, Ye Zhao, Dongning Luo, Jing Yang","IEEE InfoVis 2010","IEEE InfoVis",2010,["stream","text","timedata"],{pdf:"papers/Stream-Text-Keywords.pdf"})
+];
+/* one-line plain-language descriptions shown under each figure's name */
+const SUBS = {
+  J27:"Sketch queries on traffic", J26:"Spatial videos & geonarratives", J25:"Lens for geo-tagged text", J24:"Community events from text",
+  J23:"Tennis rally patterns", J22:"Spatiotemporal access modeling", J21:"Association rules cut clutter", J20:"Human–machine analytics",
+  J19:"Searching taxi trips by meaning", J18:"Road centrality from taxi trips", J17:"Topic lead-lag across corpora", J16:"E-commerce transaction series",
+  J15:"Tennis match analysis", J14:"Explore graph communities with text and pixels", J13:"How clustering vis helps search", J12:"Managing analysis insights",
+  J11:"Force-based live text layout", J10:"Events in news text", J9:"Protein flexibility features", J8:"Online news exploration",
+  J7:"Gene expression analysis", J6:"Wire fraud detection", J5:"News video browser", J4:"Hundreds of dimensions",
+  J3:"Multiresolution vis metrics", J2:"Multivariate data hierarchies", J1:"Radial hierarchy navigation",
+  C27:"Rethinking utility from a channel perspective", C26:"Explaining image classifiers", C25:"Which-and-when time queries", C24:"Open-source trajectory toolkit",
+  C23:"Urban POI clusters", C22:"Ideas across social groups", C21:"IDS log case study", C20:"Environmental health risks",
+  C19:"Zooming animated bubble charts", C18:"Semantic taxi movement", C17:"Categorical data layouts", C16:"Protein flexibility analysis",
+  C15:"Collaborative visual analytics", C14:"Text streams in motion", C13:"One-click insight annotation", C12:"Recording analysis findings",
+  C11:"Explore multivariate relationships", C10:"Broadcast news video", C9:"Large news video archives", C8:"Financial transaction analysis",
+  C7:"Browsing images by content", C6:"Interactive video news", C5:"High-dim data overview", C4:"Interaction frameworks",
+  C3:"Hierarchical dimension ordering, spacing & filtering", C2:"Hierarchical dimension reduction", C1:"Radial hierarchy tool",
+  A7:"Food knowledge database for precision nutrition",
+  B3:"Novel visual metaphors", B2:"High-dim visualization", B1:"Large multivariate data"
+};
+PAPERS.forEach(p => { if (!p.sub && SUBS[p.id]) p.sub = SUBS[p.id] });
+/* papers with 100+ Google Scholar citations (as of Oct 2026) */
+const CITED100 = new Set(["C3","J18","C1","J10","C8","C2","J15","C18","J3","J19","J20","C7","C13","C12","C14"]);
+PAPERS.forEach(p => p.c100 = CITED100.has(p.id));
+const CITE_TAG = '<span class="ct" title="100+ citations on Google Scholar">100+ citations</span>';
+/* five-petal flower badge for highly cited papers */
+const FLOWER = (()=>{ let s='<svg viewBox="-20 -20 40 40" width="100%" height="100%" aria-hidden="true"><circle r="19" fill="#fff" stroke="rgba(20,30,50,.18)" stroke-width="1"/>';
+  for(let i=0;i<5;i++){ const a=i*72; s+=`<ellipse cx="0" cy="-8.2" rx="5.6" ry="8.4" fill="#E9628F" stroke="#C9416F" stroke-width="0.8" transform="rotate(${a})"/>`; }
+  for(let i=0;i<5;i++){ const a=i*72+36; s+=`<ellipse cx="0" cy="-6" rx="3" ry="5.2" fill="#F7A8C3" transform="rotate(${a})"/>`; }
+  return s+'<circle r="4.6" fill="#F5C33B" stroke="#D99A12" stroke-width="0.8"/><circle r="1.6" cx="-1.2" cy="-1.2" fill="#FFE38A"/></svg>'; })();
+document.querySelectorAll('.flower-inline').forEach(e=>e.innerHTML=FLOWER);
+/* selected papers shown in the figure gallery (one per system), in list order */
+const SELECTED = new Set(["J29","J28","J27","J26","J25","J24","J23","J22","J21","J20","J19","J18","J17","J16","J15","J14","J13","J10","J9","J8","J5","J4","J3","J2","C26","C25","C24","C23","C22","C21","C20","C19","C18","C17","C16","C15","C14","C13","C12","C11","C10","C8","C7","C4","C3","C2","C1","B3","A7"]);
+const SHOW_ONLY_SELECTED = false;   // set to true when all figures are in
+const EXTRA_IN_GRID = new Set(["A7","P7","P5"]);   // MetaboFood and posters with summaries: shown in the grid too
+const HIDE_FROM_GRID = new Set(["J12","B2","J7","B1","C9","C6"]);   // ManyInsights, Dimension Management, Microarray, Hierarchical Exploration: list only
+const GALLERY = PAPERS.filter(p => !HIDE_FROM_GRID.has(p.id) && (SHOW_ONLY_SELECTED ? SELECTED.has(p.id) : ("JCB".includes(p.type) || EXTRA_IN_GRID.has(p.id))))
+  .sort((a,b) => b.year - a.year);   // newest first; within a year, list order (journals, then conferences, chapters, abstracts, posters)
+const byId = Object.fromEntries(PAPERS.map(p=>[p.id,p]));
+
+/* ---------- state ---------- */
+const state = {topics:new Set(), year:null, q:"", hover:null, fData:"", fArea:"", fMethod:"", fVenue:""};
+const VENUES = {vis:"IEEE VIS conference (VAST, InfoVis)", tvcg:"IEEE TVCG", pvis:"IEEE PacificVis", ovis:"Other visualization & HCI venues", out:"Venues outside visualization"};
+const VIS_OTHER = new Set(["IEEE CG&A","Information Visualization","CGF","Visual Informatics","VisSym","EuroVA","Computers & Graphics","The Visual Computer","Electronic Imaging","CHI EA","Springer LNCS","State of the Art"]);
+const venueGroup = p => ["IEEE VAST","IEEE InfoVis","IEEE VIS"].includes(p.vs)?"vis" : p.vs==="IEEE TVCG"?"tvcg" : p.vs==="IEEE PacificVis"?"pvis" : VIS_OTHER.has(p.vs)?"ovis" : "out";
+const anyFilter = () => !!(state.topics.size||state.year!==null||state.q||state.fData||state.fArea||state.fMethod||state.fVenue);
+const $ = s => document.querySelector(s);
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const tcol = t => `var(${GROUPS[TOPICS[t][1]].v})`;
+const esc = s => String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const authorsHTML = a => esc(a);
+const hay = p => (p.id+" "+p.short+" "+(p.sub||"")+" "+p.title+" "+p.authors+" "+p.venue+" "+p.year).toLowerCase();
+PAPERS.forEach(p=>p._h=hay(p));
+
+function matches(p, ignore){
+  if (ignore!=="topics" && state.topics.size && !p.topics.some(t=>state.topics.has(t))) return false;
+  if (ignore!=="year" && state.year!==null && p.year!==state.year) return false;
+  if (state.q && !state.q.split(/\s+/).every(w=>p._h.includes(w))) return false;
+  if (state.fData && !p.topics.includes(state.fData)) return false;
+  if (state.fArea && !p.topics.includes(state.fArea)) return false;
+  if (state.fMethod && !p.topics.includes(state.fMethod)) return false;
+  if (state.fVenue && venueGroup(p)!==state.fVenue) return false;
+  return true;
+}
+
+/* ---------- placeholder figures (drawn, until real figures are added) ---------- */
+function rng(seed){let s=2166136261;for(const c of seed){s^=c.charCodeAt(0);s=Math.imul(s,16777619)>>>0}return()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return s/4294967296}}
+const KIND = {highdim:"pcp",categorical:"sets",hier:"rings",multires:"rings",text:"river",stream:"river",news:"river",events:"river",topicmodel:"river",social:"river",
+  traj:"paths",urban:"paths",geo:"paths",time:"lines",timedata:"lines",finance:"lines",security:"lines",graph:"graph",collab:"graph",sports:"court",
+  bio:"heat",health:"heat",nutrition:"heat",ml:"heat",xai:"heat",privacy:"heat",video:"mosaic",edu:"bars"};
+function kindOf(p){for(const t of p.topics) if(KIND[t]) return KIND[t]; return "scatter"}
+function hexA(hex,a){hex=hex.replace("#","");const n=parseInt(hex.length===3?hex.split("").map(c=>c+c).join(""):hex,16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`}
+
+function drawGlyph(cv,p){
+  const r = cv.getBoundingClientRect(); const W = Math.max(60, r.width||240), H = Math.max(45, r.height||180);
+  const d = Math.min(2, window.devicePixelRatio||1); cv.width = W*d; cv.height = H*d;
+  const g = cv.getContext("2d"); g.setTransform(d,0,0,d,0,0);
+  const R = rng(p.id), c1 = css(GROUPS[TOPICS[p.topics[0]][1]].v), c2 = css(GROUPS[TOPICS[p.topics[1]||p.topics[0]][1]].v);
+  g.fillStyle = css("--soft"); g.fillRect(0,0,W,H);
+  const ink = css("--muted"); const m = Math.min(W,H)*.1, x0=m, y0=m, w=W-2*m, h=H-2*m;
+  g.lineCap="round"; g.lineJoin="round";
+  const k = kindOf(p);
+  if (k==="pcp"){ const A=6+Math.floor(R()*3); g.strokeStyle=hexA(ink,.5); g.lineWidth=1;
+    for(let i=0;i<A;i++){const x=x0+w*i/(A-1); g.beginPath(); g.moveTo(x,y0); g.lineTo(x,y0+h); g.stroke()}
+    for(let l=0;l<34;l++){ g.strokeStyle = hexA(l%4?c1:c2, .28); g.lineWidth=1.2; g.beginPath(); let base=R();
+      for(let i=0;i<A;i++){ base = Math.min(1,Math.max(0, base + (R()-.5)*.7)); const x=x0+w*i/(A-1), y=y0+h*base; i?g.lineTo(x,y):g.moveTo(x,y)} g.stroke()} }
+  else if (k==="sets"){ const cols=4; let tops=[];
+    for(let c=0;c<cols;c++){ let acc=0; const n=3+Math.floor(R()*2); const parts=[...Array(n)].map(()=>.3+R()); const s=parts.reduce((a,b)=>a+b); const x=x0+w*c/(cols-1);
+      tops[c]=parts.map(v=>{const y=y0+acc/s*h; acc+=v; return [y, y0+acc/s*h]});
+      g.fillStyle=hexA(ink,.6); tops[c].forEach(([a,b])=>g.fillRect(x-3,a+1,6,b-a-2)); }
+    for(let c=0;c<cols-1;c++) for(let i=0;i<9;i++){ const A=tops[c][Math.floor(R()*tops[c].length)], B=tops[c+1][Math.floor(R()*tops[c+1].length)];
+      const xa=x0+w*c/(cols-1)+3, xb=x0+w*(c+1)/(cols-1)-3, ya=A[0]+(A[1]-A[0])*R(), yb=B[0]+(B[1]-B[0])*R(), t=(A[1]-A[0])*.25*R()+2;
+      g.fillStyle=hexA(i%3?c1:c2,.22); g.beginPath(); g.moveTo(xa,ya); g.bezierCurveTo((xa+xb)/2,ya,(xa+xb)/2,yb,xb,yb); g.lineTo(xb,yb+t); g.bezierCurveTo((xa+xb)/2,yb+t,(xa+xb)/2,ya+t,xa,ya+t); g.fill() } }
+  else if (k==="rings"){ const cx=W/2, cy=H/2, R0=Math.min(w,h)/2; let segs=[[0,Math.PI*2]];
+    for(let lv=0;lv<4;lv++){ const next=[]; const r1=R0*(.18+lv*.21), r2=r1+R0*.19;
+      segs.forEach(([a,b],si)=>{ const n=1+Math.floor(R()*3); let acc=a; for(let j=0;j<n;j++){ const e = j===n-1?b:acc+(b-a)*(.2+R()*.6)/n*1.6; const ee=Math.min(e,b);
+        g.fillStyle=hexA((lv+j)%2?c1:c2, .25+lv*.13); g.beginPath(); g.arc(cx,cy,r2,acc+.02,ee-.02); g.arc(cx,cy,r1,ee-.02,acc+.02,true); g.closePath(); g.fill();
+        if(R()>.25) next.push([acc,ee]); acc=ee; if(acc>=b) break }}); segs=next } }
+  else if (k==="river"){ const L=5, N=40; const cols=[c1,c2,c1,ink,c2]; let base=new Array(N).fill(0);
+    const layers=[...Array(L)].map(()=>{const ph=R()*6, fr=1+R()*2.5, amp=.4+R(), off=R(); return [...Array(N)].map((_,i)=>Math.max(.05,(Math.sin(i/N*fr*6.28+ph)*.5+.6)*amp*(off+.4)))});
+    const tot=[...Array(N)].map((_,i)=>layers.reduce((s,l)=>s+l[i],0)); const mx=Math.max(...tot);
+    layers.forEach((l,li)=>{ g.fillStyle=hexA(cols[li%cols.length], li===3?.25:.38+li*.06); g.beginPath();
+      const top=[]; for(let i=0;i<N;i++){const x=x0+w*i/(N-1); const yc=y0+h/2 - tot[i]/mx*h/2; top.push([x,yc+base[i]/mx*h])}
+      top.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));
+      for(let i=N-1;i>=0;i--){const x=x0+w*i/(N-1); const yc=y0+h/2 - tot[i]/mx*h/2; g.lineTo(x,yc+(base[i]+l[i])/mx*h)}
+      g.closePath(); g.fill(); base=base.map((b,i)=>b+l[i]) }) }
+  else if (k==="paths"){ g.strokeStyle=hexA(ink,.22); g.lineWidth=1; const gs=Math.max(14,w/9);
+    for(let x=x0;x<=x0+w;x+=gs){g.beginPath();g.moveTo(x+(R()-.5)*4,y0);g.lineTo(x+(R()-.5)*4,y0+h);g.stroke()}
+    for(let y=y0;y<=y0+h;y+=gs){g.beginPath();g.moveTo(x0,y);g.lineTo(x0+w,y+(R()-.5)*6);g.stroke()}
+    for(let t=0;t<7;t++){ g.strokeStyle=hexA(t%3?c1:c2,.75); g.lineWidth=t<2?2.6:1.6; g.beginPath(); let x=x0+Math.floor(R()*9)*gs, y=y0+Math.floor(R()*6)*gs; g.moveTo(x,y);
+      for(let s=0;s<6;s++){ if(R()>.5) x=Math.min(x0+w,Math.max(x0,x+(R()>.5?1:-1)*gs*(1+Math.floor(R()*2)))); else y=Math.min(y0+h,Math.max(y0,y+(R()>.5?1:-1)*gs)); g.lineTo(x,y)} g.stroke();
+      g.fillStyle=hexA(t%3?c1:c2,1); g.beginPath(); g.arc(x,y,2.6,0,7); g.fill() } }
+  else if (k==="lines"){ g.strokeStyle=hexA(ink,.25); g.lineWidth=1; for(let i=0;i<=3;i++){const y=y0+h*i/3; g.beginPath(); g.moveTo(x0,y); g.lineTo(x0+w,y); g.stroke()}
+    for(let s=0;s<3;s++){ g.strokeStyle=hexA(s===1?c2:c1, s===0?.95:.5); g.lineWidth=s===0?2:1.4; g.beginPath(); let v=.3+R()*.4;
+      for(let i=0;i<48;i++){ v=Math.min(.95,Math.max(.05,v+(R()-.5)*.16)); const x=x0+w*i/47, y=y0+h*(1-v); i?g.lineTo(x,y):g.moveTo(x,y)} g.stroke() }
+    g.fillStyle=hexA(c2,.18); g.fillRect(x0+w*(.3+R()*.3),y0,w*.12,h) }
+  else if (k==="graph"){ const C=3+Math.floor(R()*2), nodes=[];
+    for(let c=0;c<C;c++){const cx=x0+w*(.18+.64*R()), cy=y0+h*(.18+.64*R()); for(let i=0;i<7;i++) nodes.push({x:cx+(R()-.5)*w*.3,y:cy+(R()-.5)*h*.35,c})}
+    nodes.forEach(n=>{n.x=Math.min(x0+w,Math.max(x0,n.x)); n.y=Math.min(y0+h,Math.max(y0,n.y))});
+    g.lineWidth=1; nodes.forEach((a,i)=>nodes.forEach((b,j)=>{ if(j<=i) return; const same=a.c===b.c; if(R()<(same?.35:.03)){ g.strokeStyle=hexA(same?ink:c2, same?.35:.6); g.beginPath(); g.moveTo(a.x,a.y); g.lineTo(b.x,b.y); g.stroke()}}));
+    nodes.forEach(n=>{g.fillStyle=hexA(n.c%2?c2:c1,.9); g.beginPath(); g.arc(n.x,n.y,2.4+R()*2.4,0,7); g.fill()}) }
+  else if (k==="court"){ const cw=w*.92, ch=Math.min(h,cw*.46), cx=(W-cw)/2, cy=(H-ch)/2; g.fillStyle=hexA(c1,.12); g.fillRect(cx,cy,cw,ch);
+    g.strokeStyle=hexA(ink,.7); g.lineWidth=1.2; g.strokeRect(cx,cy,cw,ch); g.strokeRect(cx,cy+ch*.12,cw,ch*.76);
+    g.beginPath(); g.moveTo(cx+cw/2,cy-4); g.lineTo(cx+cw/2,cy+ch+4); g.moveTo(cx+cw*.23,cy+ch*.12); g.lineTo(cx+cw*.23,cy+ch*.88); g.moveTo(cx+cw*.77,cy+ch*.12); g.lineTo(cx+cw*.77,cy+ch*.88);
+    g.moveTo(cx+cw*.23,cy+ch/2); g.lineTo(cx+cw*.77,cy+ch/2); g.stroke();
+    for(let i=0;i<26;i++){ g.fillStyle=hexA(i%3?c1:c2,.8); g.beginPath(); g.arc(cx+cw*R(),cy+ch*R(),2.2,0,7); g.fill() }
+    g.fillStyle=hexA(ink,.5); for(let i=0;i<24;i++){const bh=R()*(H-cy-ch)*.7; g.fillRect(x0+i*w/24, H-m*.4-bh, w/24-2, bh)} }
+  else if (k==="heat"){ const cols=12, rows=8, cw=w/cols, chh=h/rows; const ph=R()*5;
+    for(let i=0;i<cols;i++) for(let j=0;j<rows;j++){ const v=(Math.sin(i*.6+ph)*Math.cos(j*.7+ph)+1)/2*.7+R()*.3; g.fillStyle=hexA(v>.62?c2:c1, .12+v*.75); g.fillRect(x0+i*cw+1,y0+j*chh+1,cw-2,chh-2)} }
+  else if (k==="mosaic"){ const cols=5, rows=4, cw=w/cols, chh=h/rows;
+    for(let i=0;i<cols;i++) for(let j=0;j<rows;j++){ const v=R(); g.fillStyle=hexA(v>.7?c2:c1,.15+v*.5); g.fillRect(x0+i*cw+2,y0+j*chh+2,cw-4,chh-4);
+      g.fillStyle=hexA(ink,.25); g.fillRect(x0+i*cw+2,y0+(j+1)*chh-6,(cw-4)*R(),2) } }
+  else if (k==="bars"){ const n=8; for(let i=0;i<n;i++){ const v=.2+R()*.75; g.fillStyle=hexA(i%3?c1:c2,.7); g.fillRect(x0+i*w/n+3,y0+h*(1-v),w/n-6,h*v)} }
+  else { for(let c=0;c<4;c++){ const cx=x0+w*(.15+.7*R()), cy=y0+h*(.15+.7*R()), rr=Math.min(w,h)*(.12+R()*.12);
+      g.strokeStyle=hexA(c%2?c2:c1,.6); g.lineWidth=1.2; g.beginPath(); g.arc(cx,cy,rr,0,7); g.stroke();
+      for(let i=0;i<14;i++){const a=R()*7, d2=R()*rr*.9; g.fillStyle=hexA(c%2?c2:c1,.8); g.beginPath(); g.arc(cx+Math.cos(a)*d2,cy+Math.sin(a)*d2,2,0,7); g.fill()} } }
+}
+
+/* figure element: tries figures/ID.png|jpg|webp, falls back to a drawn glyph */
+const figCache = {};
+function figureEl(p, cls, fid){
+  fid = fid || p.id;
+  const box = document.createElement("div"); box.className = cls||"";
+  const cv = document.createElement("canvas"); cv.setAttribute("aria-hidden","true"); cv._p = p; box.appendChild(cv);
+  if (figCache[fid] === false) return box;
+  const img = new Image(); img.alt = `Figure from ${p.short}`; img.loading="lazy"; img.decoding="async";
+  let i = 0;
+  img.onerror = () => { i++; if (i < FIG_EXT.length) img.src = FIG_DIR+fid+"."+FIG_EXT[i]; else { figCache[fid]=false; img.remove(); } };
+  img.onload = () => { figCache[fid] = img.src; cv.remove(); };
+  img.src = typeof figCache[fid]==="string" ? figCache[fid] : FIG_DIR+fid+"."+FIG_EXT[0];
+  box.appendChild(img);
+  return box;
+}
+function paintCanvases(root=document){ root.querySelectorAll("canvas").forEach(cv=>{ if(cv._p && cv.isConnected) drawGlyph(cv,cv._p) }) }
+
+/* ---------- topic cloud ---------- */
+const counts = {}; Object.keys(TOPICS).forEach(t=>counts[t]=0); PAPERS.forEach(p=>p.topics.forEach(t=>counts[t]++));
+const co = {}; PAPERS.forEach(p=>p.topics.forEach(a=>p.topics.forEach(b=>{ if(a!==b){ (co[a]??={})[b]=1 } })));
+function buildCloud(){
+  const keys = Object.keys(TOPICS).filter(t=>counts[t]>0).sort((a,b)=>counts[b]-counts[a]);
+  const arranged = []; keys.forEach((k,i)=> i%2 ? arranged.push(k) : arranged.unshift(k));
+  const mn = Math.min(...keys.map(k=>counts[k])), mx = Math.max(...keys.map(k=>counts[k]));
+  const cloud = $("#cloud");
+  arranged.forEach((t,i)=>{
+    const b = document.createElement("button"); b.type="button"; b.className="tag"; b.dataset.t=t;
+    const s = Math.pow((counts[t]-mn)/(mx-mn||1), .7);
+    b.style.fontSize = (14 + s*30).toFixed(1)+"px"; b.style.fontWeight = s>.45?700:500;
+    b.style.setProperty("--c", tcol(t)); b.setAttribute("aria-pressed","false");
+    b.innerHTML = `${esc(TOPICS[t][0])}<sup>${counts[t]}</sup>`;
+    b.title = `${counts[t]} publications`;
+    b.onclick = () => { if (b.classList.contains("zero")) return; state.topics.has(t)?state.topics.delete(t):state.topics.add(t); update(); };
+    b.onmouseenter = b.onfocus = () => { state.hover=t; hoverFx() };
+    b.onmouseleave = b.onblur = () => { state.hover=null; hoverFx() };
+    cloud.appendChild(b);
+  });
+  $("#legend").innerHTML = Object.entries(GROUPS).map(([k,g])=>`<span style="--c:var(${g.v})"><i></i>${g.label}</span>`).join("");
+}
+function hoverFx(){
+  const h = state.hover;
+  document.querySelectorAll(".tag").forEach(b=>{ const t=b.dataset.t; b.classList.toggle("dim", !!h && t!==h && !(co[h]&&co[h][t])) });
+  document.querySelectorAll(".tile").forEach(el=>{ const p=byId[el.dataset.id]; el.classList.toggle("dim", !!h && !p.topics.includes(h)) });
+  if (typeof mapFx==="function") mapFx();
+}
+
+/* ---------- year chart ---------- */
+const Y0=2002, Y1=2026;
+function drawYears(){
+  const svg=$("#years"), W=400, H=190, pl=22, pr=4, pt=8, pb=22, n=Y1-Y0+1, bw=(W-pl-pr)/n;
+  const all={}, jour={}, hit={}, hitJ={};
+  for(let y=Y0;y<=Y1;y++){all[y]=0;jour[y]=0;hit[y]=0;hitJ[y]=0}
+  PAPERS.forEach(p=>{ all[p.year]++; if(p.type==="J") jour[p.year]++; if(matches(p,"year")){hit[p.year]++; if(p.type==="J") hitJ[p.year]++} });
+  const mx=Math.max(...Object.values(all)), top=Math.ceil(mx/2)*2, sy=v=>(H-pb)-(v/top)*(H-pb-pt);
+  const ink=css("--muted"), acc=css("--accent"), line=css("--line"), soft=css("--soft");
+  const filtered = state.topics.size || state.q;
+  let s="";
+  for(let v=0;v<=top;v+=2){ s+=`<line x1="${pl}" x2="${W-pr}" y1="${sy(v)}" y2="${sy(v)}" stroke="${line}" stroke-width="1"/>`; if(v%4===0) s+=`<text x="${pl-5}" y="${sy(v)+3}" text-anchor="end">${v}</text>` }
+  for(let y=Y0;y<=Y1;y++){
+    const x=pl+(y-Y0)*bw+1, w=bw-2, sel=state.year===y, other=state.year!==null&&!sel;
+    s+=`<g class="bar" data-y="${y}" tabindex="0" role="button" aria-label="${y}: ${all[y]} publications" aria-pressed="${sel}">`;
+    s+=`<rect x="${x-1}" y="${pt}" width="${bw}" height="${H-pb-pt}" fill="transparent"/>`;
+    if(filtered) s+=`<rect x="${x}" y="${sy(all[y])}" width="${w}" height="${sy(0)-sy(all[y])}" fill="${soft}" stroke="${line}"/>`;
+    const tot = filtered?hit[y]:all[y], j = filtered?hitJ[y]:jour[y], op = other?.25:1;
+    s+=`<rect x="${x}" y="${sy(tot)}" width="${w}" height="${sy(0)-sy(tot)}" fill="${acc}" fill-opacity="${.38*op}"/>`;
+    s+=`<rect x="${x}" y="${sy(j)}" width="${w}" height="${sy(0)-sy(j)}" fill="${acc}" fill-opacity="${op}"/>`;
+    if(sel) s+=`<rect x="${x-1}" y="${sy(Math.max(all[y],1))-4}" width="${w+2}" height="2" fill="${css("--ink")}"/>`;
+    s+=`</g>`;
+    if((y-Y0)%4===0) s+=`<text x="${x+w/2}" y="${H-6}" text-anchor="middle">${y}</text>`;
+  }
+  svg.innerHTML=s;
+  svg.querySelectorAll(".bar").forEach(g=>{ const y=+g.dataset.y; const act=()=>{ state.year = state.year===y?null:y; update() };
+    g.onclick=act; g.onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();act()} } });
+}
+function drawCounts(){
+  const c={J:0,C:0,O:0}; PAPERS.forEach(p=>{ if(!matches(p)) return; p.type==="J"?c.J++:p.type==="C"?c.C++:c.O++ });
+  $("#counts").innerHTML = `<div><b>${c.J}</b><span>journal articles</span></div><div><b>${c.C}</b><span>conference papers</span></div><div><b>${c.O}</b><span>chapters, abstracts, posters</span></div>`;
+}
+
+/* ---------- gallery ---------- */
+function buildGrid(){
+  const grid=$("#grid");
+  GALLERY.forEach(p=>{
+    const b=document.createElement("button"); b.type="button"; b.className="tile"+(p.award?" has-award":""); b.dataset.id=p.id;
+    b.setAttribute("aria-label", `${p.short}, ${p.vs} ${p.year}. Open details`);
+    const th = figureEl(p,"thumb");
+    th.insertAdjacentHTML("beforeend", `${p.c100?`<span class="flower" title="100+ citations on Google Scholar" aria-label="100+ citations">${FLOWER}</span>`:""}`);
+    b.appendChild(th);
+    b.insertAdjacentHTML("beforeend", `<div class="cap">${p.award?`<strong class="aw">${esc(p.awardShort||"Award")}</strong>`:""}<b>${esc(p.short)}</b>${p.sub?`<em>${esc(p.sub)}</em>`:""}<span>${esc(p.vs)} · ${p.year}${p.note?" · "+esc(p.note):""}</span></div>`);
+    b.onclick=()=>openPaper(p.id);
+    grid.appendChild(b);
+  });
+  grid.insertAdjacentHTML("beforeend", `<div class="empty" id="gEmpty" hidden>No figures match these filters. <button class="clear" type="button" data-clear>Clear filters</button></div>`);
+}
+
+/* ---------- list ---------- */
+function linkHTML(p){
+  const L=p.links||{}, out=[];
+  if(L.paper) out.push(`<a href="${L.paper}" target="_blank" rel="noopener">Publisher page</a>`);
+  if(L.pdf) out.push(`<a href="${L.pdf}" target="_blank" rel="noopener">PDF</a>`);
+  if(L.summary) out.push(`<a href="${L.summary}" target="_blank" rel="noopener">Summary</a>`);
+  if(L.poster) out.push(`<a href="${L.poster}" target="_blank" rel="noopener">Poster</a>`);
+  if(L.vid) out.push(`<a href="${L.vid}">Video</a>`);
+  if(L.vid2) out.push(`<a href="${L.vid2}">${esc(L.vid2Label||"Video 2")}</a>`);
+  if(L.video) out.push(`<a href="${L.video}" target="_blank" rel="noopener">Video ↗</a>`);
+  if(L.code) out.push(`<a href="${L.code}" target="_blank" rel="noopener">Code</a>`);
+  if(!out.length) out.push(`<a href="https://scholar.google.com/scholar?q=${encodeURIComponent('"'+p.title+'"')}" target="_blank" rel="noopener">Find on Google Scholar</a>`);
+  return out.join("");
+}
+function buildList(){
+  const root=$("#pubs");
+  Object.entries(TYPES).forEach(([k,label])=>{
+    const items=PAPERS.filter(p=>p.type===k);
+    const sec=document.createElement("div"); sec.dataset.type=k;
+    sec.innerHTML=`<h3>${label} <small data-count></small></h3><ol></ol>`;
+    const ol=sec.querySelector("ol");
+    items.forEach(p=>{
+      const li=document.createElement("li"); li.className="pub"; li.dataset.id=p.id;
+      li.innerHTML=`<button type="button" class="pthumb" aria-label="Open ${esc(p.short)}"></button><div>
+        <div class="t"><button type="button">${esc(p.title)}</button></div>
+        <div class="a">${authorsHTML(p.authors)}</div>
+        <div class="v">${esc(p.venue)}, ${p.year}${p.c100?CITE_TAG:""}${p.note?`<span class="badge">${esc(p.note)}</span>`:""}${p.award?`<span class="badge gold">${esc(p.award)}</span>`:""}</div>
+        <div class="l">${linkHTML(p)}</div></div>`;
+      li.querySelector(".t button").onclick=()=>openPaper(p.id);
+      const tb=li.querySelector(".pthumb"), fe=figureEl(p,"pfig"); tb.appendChild(fe); if(p.award) tb.classList.add("has-award"); tb.onclick=()=>openPaper(p.id);
+      ol.appendChild(li);
+    });
+    root.appendChild(sec);
+  });
+}
+
+/* ---------- update all views ---------- */
+function update(){
+  document.querySelectorAll(".tag").forEach(b=>{
+    const t=b.dataset.t, on=state.topics.has(t); b.setAttribute("aria-pressed",on);
+    const n = PAPERS.filter(p=>p.topics.includes(t) && matches(p,"topics")).length;
+    b.classList.toggle("zero", !on && n===0 && (state.year!==null || !!state.q));
+  });
+  let shown=0;
+  document.querySelectorAll(".tile").forEach(el=>{ const ok=matches(byId[el.dataset.id]); el.hidden=!ok; if(ok) shown++ });
+  $("#gEmpty").hidden = shown>0;
+  let listed=0;
+  document.querySelectorAll("#pubs > div").forEach(sec=>{ let n=0;
+    sec.querySelectorAll(".pub").forEach(li=>{ const ok=matches(byId[li.dataset.id]); li.hidden=!ok; if(ok) n++ });
+    sec.hidden = n===0; sec.querySelector("[data-count]").textContent = n; listed+=n });
+  // paper songs follow the same filters; the section hides when no song matches
+  let sung=0; const cards=document.querySelectorAll(".scard");
+  cards.forEach(c=>{ const ok=matches(byId[c.dataset.id]); c.hidden=!ok; if(ok) sung++ });
+  if(cards.length) $("#songsSec").hidden = sung===0;
+  mapFx();
+  const st=$("#status"), any=anyFilter();
+  let h = any ? `<span>Showing ${cards.length?`<strong>${sung}</strong> of ${cards.length} songs, `:""}<strong>${shown}</strong> of ${GALLERY.length} figures and <strong>${listed}</strong> of ${PAPERS.length} publications</span>`
+              : `<span>${GALLERY.length} figures · ${PAPERS.length} publications. Pick topics to narrow them down.</span>`;
+  state.topics.forEach(t=> h+=`<button class="chip" type="button" data-rm="${t}" style="--c:${tcol(t)}" aria-label="Remove ${esc(TOPICS[t][0])}"><i></i>${esc(TOPICS[t][0])} ×</button>`);
+  if(state.year!==null) h+=`<button class="chip" type="button" data-ry style="--c:var(--accent)"><i></i>${state.year} ×</button>`;
+  if(state.q) h+=`<button class="chip" type="button" data-rq style="--c:var(--muted)"><i></i>“${esc(state.q)}” ×</button>`;
+  if(state.fData) h+=`<button class="chip" type="button" data-rf="fData" style="--c:${tcol(state.fData)}"><i></i>Data: ${esc(TOPICS[state.fData][0])} ×</button>`;
+  if(state.fArea) h+=`<button class="chip" type="button" data-rf="fArea" style="--c:${tcol(state.fArea)}"><i></i>Area: ${esc(TOPICS[state.fArea][0])} ×</button>`;
+  if(state.fMethod) h+=`<button class="chip" type="button" data-rf="fMethod" style="--c:${tcol(state.fMethod)}"><i></i>Method: ${esc(TOPICS[state.fMethod][0])} ×</button>`;
+  if(state.fVenue) h+=`<button class="chip" type="button" data-rf="fVenue" style="--c:var(--muted)"><i></i>Venue: ${esc(VENUES[state.fVenue])} ×</button>`;
+  if(any) h+=`<button class="clear" type="button" data-clear>Clear all</button>`;
+  st.innerHTML=h;
+}
+function clearFilters(){ state.topics.clear(); state.year=null; state.q=""; $("#q").value="";
+  ["fData","fArea","fMethod","fVenue"].forEach(k=>{ state[k]=""; $("#"+k).value="" }); }
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-rm],[data-ry],[data-rq],[data-rf],[data-clear]"); if(!t) return;
+  if(t.dataset.rf){ state[t.dataset.rf]=""; $("#"+t.dataset.rf).value="" }
+  if(t.dataset.rm) state.topics.delete(t.dataset.rm);
+  if("ry" in t.dataset) state.year=null;
+  if("rq" in t.dataset){ state.q=""; $("#q").value="" }
+  if("clear" in t.dataset) clearFilters();
+  update();
+});
+$("#q").addEventListener("input",e=>{ state.q=e.target.value.trim().toLowerCase(); update() });
+[["fData",["data"]],["fArea",["domain"]],["fMethod",["method","ai"]]].forEach(([id,grps])=>{
+  const sel=$("#"+id);
+  Object.keys(TOPICS).filter(t=>grps.includes(TOPICS[t][1])).map(t=>[t,PAPERS.filter(p=>p.topics.includes(t)).length]).filter(x=>x[1]>0)
+    .sort((a,b)=>TOPICS[a[0]][0].localeCompare(TOPICS[b[0]][0]))
+    .forEach(([t,n])=>sel.insertAdjacentHTML("beforeend",`<option value="${t}">${esc(TOPICS[t][0])} (${n})</option>`));
+  // data type, application area and method menus replace each other: combining them leaves too few papers
+  sel.addEventListener("change",()=>{ state[id]=sel.value;
+    if(sel.value) ["fData","fArea","fMethod"].filter(k=>k!==id).forEach(k=>{ state[k]=""; $("#"+k).value="" });
+    update() });
+});
+{ const sel=$("#fVenue"), cnt={}; PAPERS.forEach(p=>{const g=venueGroup(p); cnt[g]=(cnt[g]||0)+1});
+  Object.keys(VENUES).filter(g=>cnt[g]).forEach(g=>sel.insertAdjacentHTML("beforeend",`<option value="${g}">${esc(VENUES[g])} (${cnt[g]})</option>`));
+  sel.addEventListener("change",()=>{ state.fVenue=sel.value; update() }); }
+
+/* ---------- paper songs: played when a paper's box opens ----------
+   Put the audio in a "songs" folder next to this page, named in SONGS below. */
+const SONG_DIR = "songs/";
+const SONGS = {
+  J18: {file:"J18-v3.mp3", dur:86, title:"", style:"", lyrics:
+`Hey, taxi!
+
+Thousands of taxis cross the city, day and night they roam
+Every trip along the streets shows the way the traffic goes
+Speeding, crawling, standing still, a graph of traffic flow
+Gather streets into regions, zoom from high to low
+
+Which streets matter, which regions lead, and when?
+PageRank and betweenness, rush hour, midnight, rush again
+Graph and map and time line up, three views side by side
+See how the city's heartbeat moves with every ride
+
+Traj Graph`},
+  C26: {file:"C26.mp3", dur:61, title:"", style:"", lyrics:
+`Meow, meow
+
+The AI says a Persian cat, but what was it looking at?
+Pixel maps show glowing spots, but nothing more than that
+Was it the eyes, was it the ears, which feature led the way?
+Scattered pixels glow and fade, but how much? They can't say
+
+Meow, meow
+
+Add up the glow in eyes and ears, and in the body too
+Scale the scores so every feature lines up fair and true
+Compare them over every image, a whole collection wide
+Cat Viz shows which features count when the model must decide
+
+Cat Viz`},
+  C13: {file:"C13.mp3", dur:55, title:"", style:"", lyrics:
+`Patterns, links, and anomalies, the facts the data shows
+Add your mind and your judgment, and an insight grows
+When facts come in kinds we know ahead, we're ready from the start
+One framework holds them, with a template for each part
+
+Click a cluster, click an outlier, a template does the rest
+Not the pans and zooms, but what you found, in plain words expressed
+Browse your insights by their scent, search them facet by facet too
+Link them, group them, and share them with your crew
+
+Click to Annotate`},
+  C25: {file:"C25.mp3", dur:67, title:"", style:"", lyrics:
+`Any measure over time, for everything we track
+Which ones made the top ten, and when, as we look back?
+Like who lived longer than Ireland, and when, we'd like to know
+Build the question piece by piece, and watch the answers show
+
+Which and when, which and when, ask and you will find
+Who stood out and for how long, along the line of time
+Dive into the Time Pool, let the answers rise in view
+Every line tells its own story, every match a clue
+
+Time Pool`},
+  J28: {file:"J28-v3.mp3", dur:104, title:"", style:"", lyrics:
+`She's back from the field with years of rock and sky
+Heat and moisture, pressure, wind, the weather rolling by
+Every crack is marked in time, a thought begins to grow
+Maybe days of sun came first, before the cracks would show
+
+Bam, bam
+
+In two clicks she turns the views, looking back across the days
+Sun and rain become paths inside the circle, each one leaves a trace
+The matching paths draw close together, now her hunch is coming clear
+What came before each crack began, E Vis brings it near
+
+E Vis`},
+  A7: {file:"A7.mp3", dur:91, title:"", style:"", lyrics:
+`Berries, tea, and leafy greens, thousands of foods on the plate
+Every compounds in every bite, gathered, mapped, and weighed
+What becomes of them inside us, in our gut and in our cells?
+Every food has hidden pathways, every compound has a tale to tell
+
+From the food to the compounds, to the pathways where they go
+Linked to health and to disease, now the whole connection shows
+Trace a hunch from plate to body, test it, let the answers flow
+Metabo Food, a map from what we eat to what we know
+
+Metabo Food`},
+  C19: {file:"C19.mp3", dur:50, title:"Spot-Tracking Lens", style:"", lyrics:
+`Bubbles drifting as time flows, they rise and fall and glide
+Zoom in close on just one, and it slips off to the side
+So much moving all at once, the changes slip right by
+Too many bubbles calling out, too much for any eye
+
+Spot it, track it, keep it in the lens
+Zoom in close, the view glides with it, wherever it bends
+Every detail stays in sight while the bubbles drift along
+Follow one through every moment, and the story carries on
+
+Spot-Tracking Lens`},
+  J15: {file:"J15.mp3", dur:53, title:"Tenni Vis", style:"", lyrics:
+`No wall of cameras round the court, no tracking every ball
+Just the score, the serves, who won each point, how long they lasted, that is all
+One small camera films the match from the first serve to the last
+Data any team can gather, nothing costly, nothing vast
+
+Two new views for coach and player, the whole match at a glance
+Spot a pattern, form a hunch, and give that hunch a chance
+Click a point and watch it play, see if the hunch holds true
+Tenni Vis, the match comes into view
+
+Tenni Vis`},
+  J10: {file:"J10.mp3", dur:69, title:"Event River", style:"Indie folk", lyrics:
+`Round the clock the TV news, every report has its day
+Close in words and close in time, they cluster on their way
+Each cluster reveals a real event, bursting as reports run high
+Then settles into quiet as the days go drifting by
+
+Down the Event River, many stories flow
+When a follow-up arrives, they rise again and grow
+Linked events become a story, winding down the stream
+Open up a cluster, watch the reports from the scene
+
+Event River`},
+  C3: {file:"C3.mp3", dur:118, title:"Dos-Fa", style:"Indie folk", lyrics:
+`Quack, quack
+
+A sunny day at W-P-I, we walked around the pond
+Ducks were gliding on the water as the path went on and on
+Matt turned to me and asked me, the way he'd often do
+"We already cluster data items, can we cluster dimensions too?"
+
+Hundreds of dimensions crowd the screen, the lines all tangle into gray
+Some of them move as one, they rise and fall the same way
+
+Group the alike into a tree, see the whole, then zoom in close
+A simple question by the pond, and that is where it rose
+
+Quack, quack
+
+Order them so likes stand together, side by side the patterns grow
+Space them by how much they differ, near or far, the gaps will show
+Filter out the ones that echo, keep the few that matter most
+Reach in, turn a branch around, and watch the tangled lines unfold
+
+The tree sets the dimension arrangement, then you decide where they go
+
+Dos-Fa
+Miss you, Matt`}
+};
+/* short summaries condensed from each paper's abstract; shown by the "Summary" switch in a paper's box
+   (and automatically while the paper's song plays). Papers not listed here show only their figure. */
+const SUMMARY = {
+"C27": "Differential privacy protects individuals by adding noise, but how much does that noise hurt a chart? This work rethinks utility through visual channels, asking which encodings, such as angle, position, and color density, keep their meaning in private versions of pie charts, scatterplots, and heatmaps.",
+"J1": "Radial, space-filling displays convey hierarchy structure efficiently but offer little support for selecting and navigating. InterRing defines a broad set of operations for working with hierarchies and supports them with multi-focus distortion, interactive reconfiguration of the hierarchy, and both semi-automated and manual selection.",
+"P5": "CateDocs treats a categorical dataset like a text collection: each category value becomes a word and each data item a document. An LDA topic model then finds subspace clusters, shown as Topic Cards that list each cluster's defining category values, ranked by interestingness and linked to a dimension tree for search and highlighting. LDA also reduces dimensions so optimal risk/preventive rule mining runs much faster with little information loss.",
+"P7": "Microalgae bioreactors built into building facades can clean indoor air by sequestering carbon, and architects need to see how well they perform. This display shows CO₂ input, CO₂ output and sunlight over daily cycles and across weeks: semicircle glyphs encode input and output, the gap between them shows the CO₂ sequestered, and daily bars sum it up.",
+"J29": "Street-level visual appearance matters for understanding social systems, but it rarely informs route planning. VivaRoutes uses AI-derived image features to measure similarity across large street-view collections, surfaces spatial imagery patterns, and adds them to route planners through new visualizations. A user study assesses its usefulness for exploring and comparing multiple routes.",
+"J26": "Spatial videos paired with expert geonarratives capture fine-scale, multi-period context about places, yet few tools help analyze them. GeoVisuals stores these geotagged semantic data points in a unified database for combined spatio-temporal and text queries, and offers linked visualizations for two investigation modes: analyzing by video and analyzing by location.",
+"J23": "Summary statistics tell tennis players and coaches little about how a match actually unfolded. CourtTime combines player and ball tracking data with match context, showing each point as a 1-D space-time chart in small multiples that users can sort, cluster, and align by final shot to reveal patterns. Coaches' feedback informs its evaluation.",
+"J20": "Machine learning promises to automate parts of analysis, but visual analytics still relies heavily on human creativity. Examines how systems can guide people through analysis, from basic visualization tasks to model building, covering goals, inputs, and applications, challenges in presenting guidance, ways to evaluate its quality, and the risk that guidance biases decisions.",
+"J17": "Which text collection leads on a topic, and which follows? TextPioneer extends lead-lag analysis to compute both global and local results across corpora, shown in two views: a radial space-filling tree combined with a node-link diagram, and a twisted-ladder layout. Tests on several corpora show it helps compare texts at multiple levels.",
+"J14": "Lets analysts explore large graphs through their community structure: seeing how communities relate, linking vertex attributes to network structure, and selecting vertices with specific structural and attribute features. Clean, intuitive visualizations and interactions handle graphs with thousands of vertices, demonstrated on a tag co-occurrence network built from New York Times world news.",
+"J10": "TV news is a stream of time-stamped stories. EventRiver clusters reports that are related in content and adjacent in time, and maps each cluster to a real-life event behind the news. Shown as a river, these events let analysts browse what happened, track how events evolve and link into longer stories, and read the underlying news.",
+"J6": "Banks process hundreds of thousands of wire transfers daily, and searching for known fraud patterns misses new schemes. Coordinated visualizations show how transaction keywords and accounts relate over time, and search-by-example finds accounts with similar patterns, all while staying interactive over millions of transactions. Bank investigators used it to spot suspicious activity.",
+"J3": "Multiresolution visualizations show samples or clusters instead of full data, but analysts cannot tell how faithfully those abstractions represent the original. Two quality measures, based on histogram differences and nearest-neighbor distances, built into XmdvTool help analysts judge trust in patterns, choose abstraction levels, and compare how methods preserve density and outliers.",
+"C24": "Understanding population mobility from urban trajectory data matters for transportation and urban studies. TrajAnalytics is open-source software that links trajectories to geographic structures through a conceptual data model, transforms and manages the data, and offers a web-based interface for visual queries and exploration. A preliminary user study shows its usability.",
+"C21": "Cyber threat intelligence sharing today is mostly tactical, such as blocklisted IP addresses or malware traits. Proposes strategic indicators that capture shared features across groups of attacks and attackers, enabling responses like disrupting a botnet rather than blocking one address, and shows how to derive them from a large enterprise's intrusion detection logs.",
+"C18": "Raw taxi GPS coordinates are hard to interpret semantically. Mapping each point to its street turns a taxi's movement into a document of street names, so topic modeling can uncover hidden themes of travel. Interactive views, including topic maps, street clouds, and topic routes, reveal urban mobility patterns in data from 21,360 taxis.",
+"C15": "Collaborators analyzing data at different times must review, agree on, and merge each other's insights, which is hard without instant communication. The approach automatically collects, organizes, and summarizes insights, and provides coordinated views for comparing them and steering how shared understanding forms. A case study and user study demonstrate its effectiveness.",
+"C12": "Visual analytics generates many insights, but annotating, linking, and retrieving them by hand does not scale. Proposes managing insights through data facts, the patterns, relationships, and anomalies found during exploration: a fact taxonomy for multidimensional data and a framework supporting semi-automatic annotation, fact networks, guided discovery, and sharing among collaborators.",
+"C8": "Wire transactions are categorical, time-varying, and overwhelmingly legitimate, so finding the few suspicious ones is hard, especially as fraud methods change. WireVis links coordinated views of transaction keywords and accounts over time with search-by-example for similar accounts. Working with Bank of America, anti-money-laundering investigators used it to detect suspicious behavior.",
+"C4": "Direct manipulation in visualization is often ambiguous: is the user acting on screen pixels, the data, or the surface it is projected onto? Identifies a set of interaction spaces where navigation, selection, and distortion can occur, defines how they differ, and gives examples in each, pointing toward more powerful exploration tools.",
+"C1": "Radial space-filling displays show hierarchies compactly but support few interactive operations. After defining a complete set of desirable operations on hierarchies, InterRing supports many more of them than earlier systems, including multi-focus distortion, interactive restructuring of the hierarchy, and both semi-automated and manual node selection.",
+"J28": "Earth scientists studying events such as rock cracking need to know which environmental conditions came before them. EVis explores condition–event relations in high-dimensional time series, linking events to variables like temperature and precipitation through coordinated scatterplots, heatmaps, histograms, and RadViz, and clustering RadViz trajectories to reveal time-lagged relationships.",
+"J25": "Geotagged posts, travel blogs, and crime reports tie text to places, but browsing that text on a map is hard. GTMapLens lets users move interactive lenses across a map to inspect regions, find points of interest, compare areas, and zoom into details, with keyword control, path management, and snapshot anchors kept responsive by fast retrieval.",
+"J22": "Which areas are hard to reach from several fire stations at once? Answering such questions requires analyzing urban accessibility under combined time and location constraints. A Min-Max Joint Set model on a traffic-aware street graph lets users interactively build accessible regions and inspect the streets and points of interest within them.",
+"J19": "Raw taxi GPS points carry no street or landmark names, so even simple questions about trips between places take tedious map brushing. SemanticTraj turns trajectories into searchable 'taxi documents' that record streets, points of interest, pick-ups, drop-offs, and speed terms, letting users query by place name and explore results in semantically annotated visualizations.",
+"J16": "Spotting meaningful patterns in millions of online transactions over time is hard. Analysts label sample transactions, a probabilistic decision tree scores every transaction's relevance, and a time-of-saliency map highlights interesting ones across time scales. Selected transactions appear in KnotLines, a compact view of attributes and temporal links, tested on 26 million real records.",
+"J13": "Exploratory visualization systems help people learn while they search, yet there is little guidance on how to evaluate them. A formal user study of Newdle, a clustering-based system for large news collections, draws on cognitive load theory to examine how and why clustering helps or hinders different information-seeking tasks, yielding design lessons.",
+"J9": "Protein flexibility models produce so much data that traditional large-scale analysis is nearly impossible, slowing the path from data to biomedical knowledge. WaveMap combines wavelet analysis, visualization, and interaction to help researchers browse, identify features in, and compare protein attributes shown as 2D plots, as shown through expert evaluation and an example scenario.",
+"J5": "Combines multi-modal content analysis of news videos with hyperbolic visualization to support retrieval and exploration of large-scale news video collections.",
+"J2": "Traditional multivariate displays become cluttered with large datasets. Interactive hierarchical displays cluster the data into a multi-resolution structure and show cluster summaries in hierarchical versions of parallel coordinates, star glyphs, scatterplot matrices, and dimensional stacking, with navigation and filtering tools for examining regions at different levels of detail. An empirical evaluation confirms their effectiveness.",
+"C26": "Pixel-level explanation methods show where an image classifier looks, but not how much features like eyes or ears matter. This approach aggregates LRP and Grad-CAM relevance scores into semantic regions, normalizes them for comparison, and provides an interactive interface for exploring and comparing feature contributions across image collections.",
+"C23": "Accessibility of urban points of interest shifts with time and traffic, but isochrone maps show reach from only one location. This system builds a POIGraph from a city's dual road network and traverses it to find Latent Accessibility Clusters, subregions whose changing accessibility differs, and maps them to reveal hidden spatial patterns.",
+"C20": "Logistic regression with hundreds of explanatory variables suffers from overfitting, confounding, and multicollinearity. This visual analytics approach pairs visualizations of statistical indicators and variable relationships with a dimension reduction pipeline to guide variable selection, and is applied to a birth defect study with hundreds of pollutant variables and an insurance policy study.",
+"C17": "Massive high-dimensional categorical datasets are hard to show with standard multidimensional visualization because their values are discrete. Entropy, mutual information, and joint entropy guide the construction of more effective categorical data visualizations, and user studies test whether these measures help people discover insights.",
+"C14": "Text streams such as live news arrive continuously, with no prior knowledge of their content. STREAMIT treats each document as a particle in a similarity-driven force simulation, so related documents cluster and outliers stand apart. Users adjust keyword importance to regroup documents in real time, with GPU acceleration keeping large collections responsive.",
+"C11": "Multivariate visualization systems lose effectiveness once variables span more than a few dimensions. Combining automatic numerical differentiation with multidimensional visualization lets users interactively discover relationships among many variables, supporting model building, interactive dimension reduction, and knowledge discovery. Case studies and a formal user study on a real dataset demonstrate its effectiveness.",
+"C7": "Automatic semantic image annotation is promising for browsing large image collections, but its results are rarely presented intuitively. The Semantic Image Browser combines an MDS-based image layout, the VaR display for high-dimensional content, and tools such as search by sample image, letting users search by content and analysts evaluate annotation results.",
+"C3": "Too many dimensions clutter displays like parallel coordinates and star glyphs. DOSFA builds a hierarchy of dimensions by similarity, then automatically orders, spaces, and filters them to reveal relationships and reduce clutter, while letting users refine every step. A case study with over 200 dimensions shows substantially improved high-dimensional visualizations.",
+"B3": "Node-link diagrams dominate multivariate network visualization, but many other visual forms are possible. This chapter seeks unconventional metaphors to inspire new techniques, grouping them into nature, non-physical, man-made, and visualization-inspired categories, and pairs examples from each with a collection of potential new metaphors.",
+"J27": "Urban transportation analysts often need to find past days and times when traffic at several city locations matched a particular combined pattern. QuteVis lets users sketch multiple queries directly on a city map with touch input, then browse and compare matching traffic situations and the factors that may have shaped them.",
+"J24": "Police officers and social workers need to understand events such as crimes within small neighborhoods around schools, churches, or restaurants. CLEVis combines automatic algorithms with interactive visualizations to exploit the rich semantic details in community-level event reports, supporting exploration of these local areas. It was designed together with community workers and social scientists.",
+"J21": "Parallel Sets show relationships in categorical data, but with many dimensions the ribbons become a cluttered tangle. This approach uses association rule mining to group ribbons meaningfully, and a visual analytics system helps users interpret the rules while pruning dimensions and categories. User studies and benchmark experiments show it is effective and efficient.",
+"J18": "Taxi GPS traces record how city streets carry traffic, but street networks and trajectory data are huge. TrajGraph models taxi traffic as a graph, groups streets into regions for multiscale analysis, and uses PageRank and betweenness centrality to show how the importance of streets and regions changes over time, tested on Shenzhen data.",
+"J15": "Most tennis visualization tools depend on costly multi-camera tracking of the ball and players. TenniVis serves amateur players and coaches using only basic match data, such as scores and serve information, plus single-camera video. Two visualizations reveal performance patterns, and pilot studies with college coaches suggest insights can be found and checked against video quickly.",
+"J11": "Text streams keep changing, and their keywords and topics are not known in advance. STREAMIT places each incoming document as a particle in a force-directed layout, where similar documents attract and dissimilar ones repel, revealing clusters as they emerge. Users can reweight keywords on the fly, and GPU acceleration keeps updates near-instant.",
+"J8": "Provides interactive visual tools for exploring large collections of online news articles, helping readers browse and make sense of many stories at once.",
+"J4": "Few visualization systems can handle datasets with hundreds of dimensions, where displays become cluttered and interaction slows down. The Value and Relation display shows data values compactly with pixel-oriented techniques while making relationships among dimensions explicit, and adds navigation and selection tools for moving through the dimension space.",
+"C25": "Analysts often ask “which and when” questions of time series, such as which countries ranked in the top ten for life expectancy and in which years. TimePool lets users build these queries interactively on univariate time series and then explore the matching results visually to find insights.",
+"C22": "Tracking how related ideas spread within and across social groups helps explain how opinions travel on social media. IdeaFlow models lead-lag relationships among ideas and shows them through a bubble-tree overview, flow maps of idea movement between groups, and a multi-granularity timeline. Quantitative evaluation and case studies show it is accurate and effective.",
+"C19": "Zooming works well in static charts but poorly in animated ones, where viewers miss changes and face too many moving elements. The Spot-Tracking Lens pairs zooming with automatic panning that follows a chosen bubble in an animated bubble chart. Preliminary user studies suggest it helps users examine details and may make exploring dynamic data engaging.",
+"C16": "Protein flexibility data are high-dimensional, and local subregions of residues can reveal patterns that drive a protein's overall behavior. This visual analytics approach helps analysts isolate, cluster, and compare such flexibility subspaces across a dataset, classifying regions as rigid, flexible, or mixed and tracking how they change across conditions.",
+"C13": "Recording the meaning of insights during analysis takes effort, and most automated methods capture only low-level clicks or zooms. Click2Annotate semi-automatically annotates the results of analytic tasks, such as clusters and outliers, with rich semantics. A user study shows it reduces effort and yields understandable annotations that also support insight browsing and search.",
+"C10": "Broadcast news archives can hold thousands of video stories spanning long periods. NewsLab shows how themes rise and fall over time in a river view, linked to a lens that plays back selected video segments, with multi-resolution navigation of time and themes. Case studies show it helps find emerging topics and compare broadcasters.",
+"C5": "Glyphs, parallel coordinates, and scatterplot matrices become cluttered with high-dimensional data. The Value and Relation display reveals relationships among dimensions while showing data values compactly with pixel-oriented techniques, and adds navigation and selection tools for exploring datasets with hundreds of dimensions and many data items.",
+"C2": "Standard multidimensional displays clutter as dimensions grow, and the reduced spaces produced by dimension reduction are hard to interpret. Visual Hierarchical Dimension Reduction organizes dimensions into a hierarchy and builds lower-dimensional views from dimension clusters, letting users steer most steps. A case study on real data shows its value for exploring high-dimensional datasets.",
+"A7": "Studying how diet affects health requires connecting foods to the chemicals they contain. The Metabolome of Food Knowledge Database gathers chemical, analytical, spectral, and biological data on foods and diets, with a visualization interface linking food, diet, the human metabolome, biochemical pathways, and disease to support precision nutrition research.",
+};
+/* an extra figure shown under a paper's summary (e.g. the view a song sings about) */
+const SUMMARY_FIG = { J28: {src:"figures/J28-sum.jpg", alt:"EVis RadViz circle views: each circle traces how environmental conditions moved before an event"} };
+const songAudio = new Audio(); songAudio.preload = "none";
+function songUI(){ const on=!songAudio.paused;
+  const b=document.querySelector("#dSong .sp"); if(!b) return;
+  b.textContent = on ? "❚❚" : "▶"; b.setAttribute("aria-label", on ? "Pause song" : "Play song"); }
+songAudio.addEventListener("error",()=>{ const b=$("#dSong"); if(b) b.hidden=true; }); // file not uploaded yet
+songAudio.addEventListener("play",songUI); songAudio.addEventListener("pause",songUI);
+songAudio.addEventListener("ended",()=>{ songAudio.currentTime=0; songUI(); });
+songAudio.addEventListener("timeupdate",()=>{ const i=document.querySelector("#dSong .sbar i"); if(i&&songAudio.duration) i.style.width=(100*songAudio.currentTime/songAudio.duration)+"%"; });
+function showSong(p){
+  const box=$("#dSong"), s=SONGS[p.id];
+  if(!(s && songAudio.src.endsWith(SONG_DIR+s.file) && !songAudio.paused)) songAudio.pause();
+  if(!s){ box.hidden=true; box.innerHTML=""; return; }
+  box.hidden=false;
+  box.innerHTML=`<button class="sp" type="button" aria-label="Play song">▶</button>
+    <div class="si"><b>♪ A song about this paper</b><div class="sbar" title="Seek"><i></i></div></div>
+    ${s.lyrics?`<button class="sl" type="button" aria-expanded="false">Lyrics</button><pre class="sly" hidden>${esc(s.lyrics)}</pre>`:""}`;
+  box.querySelector(".sp").onclick=()=>{ songAudio.paused ? songAudio.play().catch(()=>{}) : songAudio.pause(); };
+  box.querySelector(".sbar").onclick=e=>{ if(!songAudio.duration) return; const r=e.currentTarget.getBoundingClientRect(); songAudio.currentTime=songAudio.duration*(e.clientX-r.left)/r.width; };
+  const lb=box.querySelector(".sl"); if(lb) lb.onclick=()=>{ const ly=box.querySelector(".sly"); ly.hidden=!ly.hidden; lb.setAttribute("aria-expanded",!ly.hidden); };
+  const src=SONG_DIR+s.file;
+  if(songAudio.src.endsWith(src) && !songAudio.paused) { songUI(); return; } // already playing from the song list: keep going
+  if(!songAudio.src.endsWith(src)) songAudio.src=src;
+  songAudio.currentTime=0; songAudio.play().catch(()=>{}); // opening the box is a click, so browsers allow the song to start
+}
+
+/* ---------- song list: every paper that has a song, with play all ---------- */
+let playQueue=null;
+const fmtTime=t=>isFinite(t)?`${Math.floor(t/60)}:${String(Math.round(t%60)).padStart(2,"0")}`:"";
+function songListUI(){
+  document.querySelectorAll(".scard").forEach(c=>{ const s=SONGS[c.dataset.id], mine=songAudio.src.endsWith(SONG_DIR+s.file), on=mine&&!songAudio.paused;
+    c.classList.toggle("on",mine&&(on||songAudio.currentTime>0)); c.classList.toggle("playing",on); const b=c.querySelector(".sp"); b.textContent=on?"❚❚":"▶"; b.setAttribute("aria-label",(on?"Pause":"Play")+" the song about "+byId[c.dataset.id].short);
+    const frac = mine&&songAudio.duration ? songAudio.currentTime/songAudio.duration : 0;
+    c.querySelector(".sbar i").style.width = (100*frac)+"%"; });
+  const pa=$("#playAll"); if(pa) pa.innerHTML = playQueue&&!songAudio.paused ? '<span aria-hidden="true">❚❚</span> Pause' : '<span aria-hidden="true">▶</span> Play all';
+}
+function playSong(id){ const s=SONGS[id], src=SONG_DIR+s.file;
+  if(songAudio.src.endsWith(src)){ songAudio.paused ? songAudio.play().catch(()=>{}) : songAudio.pause(); return; }
+  songAudio.src=src; songAudio.currentTime=0; songAudio.play().catch(()=>{}); }
+["play","pause","timeupdate","loadedmetadata"].forEach(ev=>songAudio.addEventListener(ev,songListUI));
+// show a spinner on the active play buttons while the song is still downloading
+function songLoading(on){ document.querySelectorAll("#dSong .sp, .scard .sp").forEach(b=>{ const c=b.closest(".scard"); const mine=!c||songAudio.src.endsWith(SONG_DIR+SONGS[c.dataset.id].file); b.classList.toggle("loading", on&&mine); }); }
+["loadstart","waiting"].forEach(ev=>songAudio.addEventListener(ev,()=>{ if(!songAudio.paused||ev==="loadstart") songLoading(true); }));
+["playing","canplay","pause","error","ended"].forEach(ev=>songAudio.addEventListener(ev,()=>songLoading(false)));
+songAudio.addEventListener("ended",()=>{ if(playQueue){ const k=playQueue.indexOf(playQueue.cur)+1;
+  if(k<playQueue.length){ playQueue.cur=playQueue[k]; const s=SONGS[playQueue.cur]; songAudio.src=SONG_DIR+s.file; songAudio.play().catch(()=>{}); }
+  else playQueue=null; } songListUI(); });
+(function buildSongList(){
+  const list=$("#songList");
+  // cards are built right away (no need to load any audio first), newest paper first
+  Object.keys(SONGS).filter(id=>byId[id]).sort((a,b)=>byId[b].year-byId[a].year).forEach(id=>{ const s=SONGS[id], p=byId[id];
+      const c=document.createElement("div"); c.className="scard"+(p.award?" has-award":""); c.dataset.id=id;
+      c.innerHTML=`<div class="deck">${p.c100?`<span class="sflower" title="100+ citations on Google Scholar">${FLOWER}</span>`:""}
+          <button class="vinyl" type="button" aria-label="Play or pause the song about ${esc(p.short)}"><span class="disc"><span class="label"></span></span></button>
+          <button class="sp" type="button" aria-label="Play the song about ${esc(p.short)}">▶</button>
+        </div>
+        <div class="smeta">${p.award?`<strong class="saw">${esc(p.awardShort||"Award")}</strong>`:""}<button type="button" class="sopen"><b>${esc(p.short)}</b></button>${p.sub?`<em>${esc(p.sub)}</em>`:""}
+        <span>${esc(p.vs)} · ${p.year}${s.dur?" · "+fmtTime(s.dur):""}</span><div class="sbar" title="Seek"><i></i></div><div class="sbtns"><button type="button" class="slyr spaper" aria-label="Open the paper ${esc(p.short)}">Paper ›</button>${s.lyrics?`<button type="button" class="slyr">Lyrics</button>`:""}</div></div>`;
+      const lab=c.querySelector(".label"), fe=figureEl(p,""); fe.style.cssText="position:absolute;inset:0"; lab.appendChild(fe);
+      c.querySelector(".vinyl").onclick=()=>{ playQueue=null; playSong(id); }; // the record itself plays / pauses
+      c.querySelector(".smeta").onclick=e=>{ if(e.target.closest(".spaper")) { openPaper(id); return; } if(e.target.closest(".slyr")) { openLyrics(id); return; } if(!e.target.closest(".sbar")) openPaper(id); }; // the whole text block opens the paper
+      c.querySelector(".sp").onclick=()=>{ playQueue=null; playSong(id); };
+      c.querySelector(".sbar").onclick=e=>{ if(!songAudio.src.endsWith(SONG_DIR+s.file)||!songAudio.duration) return; const r=e.currentTarget.getBoundingClientRect(); songAudio.currentTime=songAudio.duration*(e.clientX-r.left)/r.width; };
+      list.appendChild(c);
+  });
+  if(list.children.length){ $("#songsSec").hidden=false; requestAnimationFrame(()=>paintCanvases(list)); songListUI(); }
+  $("#playAll").onclick=()=>{
+    if(playQueue && !songAudio.paused){ songAudio.pause(); return; }
+    if(playQueue && songAudio.paused && songAudio.currentTime>0){ songAudio.play().catch(()=>{}); return; }
+    const ids=[...list.querySelectorAll(".scard:not([hidden])")].map(c=>c.dataset.id); if(!ids.length) return;
+    playQueue=ids; playQueue.cur=ids[0]; songAudio.src=SONG_DIR+SONGS[ids[0]].file; songAudio.currentTime=0; songAudio.play().catch(()=>{});
+  };
+})();
+
+/* ---------- lyrics panel: follows whichever song is playing ---------- */
+const lyv=$("#lyv"); let lyId=null;
+function fillLyrics(id){ const s=SONGS[id], p=byId[id]; if(!s||!p) return; lyId=id;
+  $("#lyTitle").textContent=p.short; $("#lySub").textContent=`${p.vs} · ${p.year}${s.dur?" · "+fmtTime(s.dur):""}`;
+  $("#lyText").textContent=s.lyrics||""; $("#lyText").scrollTop=0; lyUI(); }
+function openLyrics(id){ fillLyrics(id); if(!lyv.open) lyv.showModal(); }
+function lyUI(){ if(!lyId) return; const s=SONGS[lyId], mine=songAudio.src.endsWith(SONG_DIR+s.file), on=mine&&!songAudio.paused;
+  const b=$("#lyPlay"); b.textContent=on?"❚❚":"▶"; b.setAttribute("aria-label",on?"Pause song":"Play song");
+  $("#lyBar i").style.width=(mine&&songAudio.duration?100*songAudio.currentTime/songAudio.duration:0)+"%"; }
+["play","pause","timeupdate","loadedmetadata"].forEach(ev=>songAudio.addEventListener(ev,lyUI));
+// during "Play all", the panel moves on to the next song's lyrics
+songAudio.addEventListener("play",()=>{ if(!lyv.open) return; const id=Object.keys(SONGS).find(k=>songAudio.src.endsWith(SONG_DIR+SONGS[k].file)); if(id&&id!==lyId) fillLyrics(id); });
+$("#lyPlay").onclick=()=>{ if(lyId) { const s=SONGS[lyId]; if(!songAudio.src.endsWith(SONG_DIR+s.file)) playQueue=null; playSong(lyId); } };
+$("#lyBar").onclick=e=>{ const s=SONGS[lyId]; if(!s||!songAudio.src.endsWith(SONG_DIR+s.file)||!songAudio.duration) return; const r=e.currentTarget.getBoundingClientRect(); songAudio.currentTime=songAudio.duration*(e.clientX-r.left)/r.width; };
+$("#lyClose").onclick=()=>lyv.close();
+lyv.addEventListener("click",e=>{ if(e.target===lyv) lyv.close(); });
+
+/* ---------- PDFs stored with the page open in an in-page viewer ---------- */
+const pdfv=$("#pdfv");
+// page images rendered from each PDF (browsers won't show PDFs inside this page's sandbox)
+const PDF_PAGES = {"papers/P7-poster.pdf":1, "papers/P7-summary.pdf":2, "papers/P5-summary.pdf":2, "papers/P5-poster.pdf":1};
+let pvHref="";
+// downloads go through the page's "downloads" permission (plain download links don't work on claude.ai)
+let dlNS=null; (async()=>{ try{ dlNS=await window.claude?.use?.("downloads"); }catch(e){} })();
+$("#pvDl").onclick=async()=>{ const b=$("#pvDl"); if(!dlNS||!pvHref) return; b.disabled=true;
+  try{ const blob=await (await fetch(pvHref)).blob(); await dlNS.save({filename:pvHref.split("/").pop(), data:blob}); }
+  catch(e){ if(e&&e.code&&!["declined","rate_limited"].includes(e.code)) b.hidden=true; }
+  finally{ b.disabled=false; } };
+function openPdf(href,label){ $("#pvTitle").textContent=label||"Document"; pvHref=href; $("#pvDl").hidden=!dlNS;
+  const n=PDF_PAGES[href]||0, base=href.replace(/\.pdf$/i,"");
+  $("#pvPages").innerHTML = n ? Array.from({length:n},(_,i)=>`<img src="${base}-p-${i+1}.jpg" alt="Page ${i+1}">`).join("")
+                              : `<p style="color:#fff">Preview not available. Use Download to open the PDF.</p>`;
+  $("#pvPages").scrollTop=0; pdfv.showModal(); }
+$("#pvClose").onclick=()=>pdfv.close();
+pdfv.addEventListener("close",()=>{ $("#pvPages").innerHTML=""; });
+const vidv=$("#vidv"), vv=$("#vvPlayer");
+// captions (WebVTT) for videos that have them, keyed by the video's path
+const CAPTIONS = {};   // WebVTT text, stored as .txt
+function openVideo(href,label){ $("#vvTitle").textContent=label||"Video"; songAudio.pause();
+  vv.querySelectorAll("track").forEach(t=>t.remove());
+  const cap=CAPTIONS[href.split(/[?#]/)[0]];
+  if(cap){ fetch(cap).then(r=>r.ok?r.text():Promise.reject()).then(txt=>{ if(!vidv.open||!vv.src.includes(href.split(/[?#]/)[0])) return;
+      const t=document.createElement("track"); t.kind="captions"; t.srclang="en"; t.label="English"; t.default=true;
+      t.src=URL.createObjectURL(new Blob([txt],{type:"text/vtt"})); vv.appendChild(t);
+      t.addEventListener("load",()=>{ try{ t.track.mode="showing"; }catch(e){} }); }).catch(()=>{}); }
+  vv.src=href; vidv.showModal(); vv.play().catch(()=>{}); }
+$("#vvClose").onclick=()=>vidv.close();
+vidv.addEventListener("click",e=>{ if(e.target===vidv) vidv.close(); });
+vidv.addEventListener("close",()=>{ vv.pause(); vv.querySelectorAll("track").forEach(t=>t.remove()); vv.removeAttribute("src"); vv.load(); });
+document.addEventListener("click",e=>{
+  const a=e.target.closest("a[href]"); if(!a) return; const h=a.getAttribute("href");
+  if(/^[a-z]+:/i.test(h)||!/\.(mp4|webm)($|[?#])/i.test(h)) return;   // only video files stored with the site
+  e.preventDefault();
+  const id=(a.closest(".pub")||{}).dataset?.id || cur, p=byId[id];
+  const lab=a.textContent.replace("▶","").trim()||"Video";
+  openVideo(h, p ? p.short+" · "+lab : lab);
+}, true);
+document.addEventListener("click",e=>{
+  const a=e.target.closest("a[href]"); if(!a||a.id==="pvDl") return;
+  const h=a.getAttribute("href");
+  if(/^[a-z]+:/i.test(h)||h.startsWith("#")||!/\.pdf($|[?#])/i.test(h)) return;   // only local PDF files
+  if(window.claude && OLD_PDF[h]){ e.preventDefault(); window.open(BASE+OLD_PDF[h],"_blank","noopener"); return; }
+  if(!window.claude){ a.target="_blank"; a.rel="noopener"; return; }   // on a normal web host, open the PDF itself
+  e.preventDefault();
+  const id=(a.closest(".pub")||{}).dataset?.id || cur, p=byId[id];
+  openPdf(h, (p?p.short+" · ":"")+a.textContent.replace("↗","").trim());
+}, true);
+
+/* ---------- paper dialog ---------- */
+const dlg=$("#dlg"); let cur=null, lastAnchor=null;
+document.addEventListener("click", e => { const a = e.target.closest(".tile,.pub,.related button"); if (a && !dlg.contains(a)) lastAnchor = a; }, true);
+function navList(){ const vis=GALLERY.filter(p=>matches(p)); return (vis.some(p=>p.id===cur)?vis:PAPERS.filter(p=>matches(p)).some(p=>p.id===cur)?PAPERS.filter(p=>matches(p)):PAPERS) }
+function openPaper(id){
+  cur=id; const p=byId[id];
+  const fig=$("#dFig"); fig.innerHTML=""; fig.scrollTop=0;
+  // left side: a short summary of the paper on top, the figure below
+  if (SUMMARY[p.id]) {
+    const sf=SUMMARY_FIG[p.id], a=document.createElement("div"); a.className="figsum";
+    a.innerHTML=`<div class="eyebrow">About this paper</div><p>${esc(SUMMARY[p.id])}</p>`+(sf?`<img class="sumfig" src="${sf.src}" alt="${esc(sf.alt)}" loading="lazy">`:"");
+    fig.appendChild(a);
+  }
+  const area=document.createElement("div"); area.className="figarea"; fig.appendChild(area);
+  const showFig = fid => { area.querySelectorAll(".figbox").forEach(x=>x.remove()); const f=figureEl(p,"figbox",fid); f.style.cssText="position:absolute;inset:0"; area.prepend(f); requestAnimationFrame(()=>paintCanvases(area)); };
+  showFig(p.id);
+  if (p.figs) {
+    const sw=document.createElement("div"); sw.className="figswitch"; sw.setAttribute("role","group"); sw.setAttribute("aria-label","Choose figure");
+    p.figs.forEach(([fid,label],k)=>{ const b=document.createElement("button"); b.type="button"; b.textContent=label; b.setAttribute("aria-pressed",k===0);
+      b.onclick=()=>{ sw.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b)); showFig(fid); }; sw.appendChild(b); });
+    area.appendChild(sw);
+  }
+  area.insertAdjacentHTML("beforeend", `<span class="figcap" id="dFigCap" hidden>Drawn placeholder. Add figures/${p.id}.png to show the paper's own figure.</span>`);
+  if (p.figNote) area.insertAdjacentHTML("beforeend", `<span class="figcap">${esc(p.figNote)}</span>`);
+  $("#dEyebrow").textContent = `${p.id} · ${TYPE1[p.type]}`;
+  $("#dTitle").textContent = p.short + (p.sub ? " · " + p.sub : "");
+  $("#dFull").textContent = p.title;
+  $("#dAuthors").innerHTML = authorsHTML(p.authors);
+  $("#dVenue").innerHTML = `${esc(p.venue)}, ${p.year}${p.c100?CITE_TAG:""}${p.note?`<span class="badge">${esc(p.note)}</span>`:""}${p.award?`<br><span class="badge gold" style="margin:6px 0 0;display:inline-block;white-space:normal">${esc(p.award)}</span>`:""}`;
+  $("#dTags").innerHTML = p.topics.map(t=>`<button class="chip" type="button" data-topic="${t}" style="--c:${tcol(t)}"><i></i>${esc(TOPICS[t][0])}</button>`).join("");
+  showSong(p);
+  $("#dTags").querySelectorAll("[data-topic]").forEach(b=>b.onclick=()=>{ state.topics=new Set([b.dataset.topic]); state.year=null; update(); dlg.close(); $("#h-pubs").scrollIntoView({behavior:"smooth"}) });
+  const L=p.links||{}; let a="";
+  const first = L.paper||L.pdf||L.summary||L.poster;
+  if(L.paper) a+=`<a class="btn primary" href="${L.paper}" target="_blank" rel="noopener">Read the paper ↗</a>`;
+  if(L.pdf) a+=`<a class="btn ${L.paper?"":"primary"}" href="${L.pdf}" target="_blank" rel="noopener">PDF ↗</a>`;
+  if(L.summary) a+=`<a class="btn ${L.paper||L.pdf?"":"primary"}" href="${L.summary}" target="_blank" rel="noopener">Summary ↗</a>`;
+  if(L.poster) a+=`<a class="btn ${L.paper||L.pdf||L.summary?"":"primary"}" href="${L.poster}" target="_blank" rel="noopener">Poster ↗</a>`;
+  if(L.vid) a+=`<a class="btn" href="${L.vid}">▶ Video</a>`;
+  if(L.vid2) a+=`<a class="btn" href="${L.vid2}">▶ ${esc(L.vid2Label||"Video 2")}</a>`;
+  if(L.video) a+=`<a class="btn" href="${L.video}" target="_blank" rel="noopener">▶ Video ↗</a>`;
+  if(L.code) a+=`<a class="btn" href="${L.code}" target="_blank" rel="noopener">Code ↗</a>`;
+  if(!first) a+=`<a class="btn primary" href="https://scholar.google.com/scholar?q=${encodeURIComponent('"'+p.title+'"')}" target="_blank" rel="noopener">Find on Google Scholar ↗</a>`;
+  $("#dActions").innerHTML=a;
+  const rel = GALLERY.filter(q=>q.id!==p.id).map(q=>{ const i=q.topics.filter(t=>p.topics.includes(t)).length; return [q, i/(new Set([...q.topics,...p.topics]).size)] })
+    .filter(x=>x[1]>0).sort((x,y)=>y[1]-x[1]||y[0].year-x[0].year).slice(0,4);
+  const rr=$("#dRelated");
+  if(rel.length){ rr.hidden=false; rr.innerHTML=`<div class="eyebrow">Related papers</div><ul></ul>`;
+    const ul=rr.querySelector("ul");
+    rel.forEach(([q])=>{ const li=document.createElement("li"); const b=document.createElement("button"); b.type="button";
+      const f=figureEl(q); f.style.cssText="width:52px;height:39px;position:relative;flex:none;border-radius:3px;overflow:hidden";
+      f.querySelectorAll("canvas,img").forEach(x=>x.style.cssText="position:absolute;inset:0;width:100%;height:100%;object-fit:cover");
+      b.appendChild(f); b.insertAdjacentHTML("beforeend",`<span><b>${esc(q.short)}</b><br><span class="eyebrow" style="font-size:10.5px">${esc(q.vs)} ${q.year}</span></span>`);
+      b.onclick=()=>openPaper(q.id); li.appendChild(b); ul.appendChild(li) });
+  } else rr.hidden=true;
+  if(!dlg.open){
+    // open beside what was clicked, so it is visible even when the page is shown at full height inside a frame
+    const r = lastAnchor && lastAnchor.isConnected ? lastAnchor.getBoundingClientRect() : null;
+    const fullHeightFrame = document.documentElement.scrollHeight <= window.innerHeight + 4 && window.innerHeight > 1500;
+    dlg.style.margin = (fullHeightFrame && r) ? `${Math.max(16, r.top - 60)}px auto 16px` : "";
+    dlg.style.maxHeight = fullHeightFrame ? "720px" : "";
+    dlg.showModal();
+    try { dlg.scrollIntoView({block:"nearest"}); } catch(e) {}
+  }
+  requestAnimationFrame(()=>{ paintCanvases(dlg); const cap=$("#dFigCap"); if(cap) cap.hidden = !fig.querySelector("canvas"); });
+  const img=fig.querySelector("img"); if(img){ img.addEventListener("load",()=>{ const c=$("#dFigCap"); if(c) c.hidden=true },{once:true}) }
+}
+function step(d){ const L=navList(); const i=L.findIndex(p=>p.id===cur); openPaper(L[(i+d+L.length)%L.length].id) }
+$("#dPrev").onclick=()=>step(-1); $("#dNext").onclick=()=>step(1); $("#dClose").onclick=()=>dlg.close();
+dlg.addEventListener("click",e=>{ if(e.target===dlg) dlg.close() });
+dlg.addEventListener("close",()=>songAudio.pause());
+dlg.addEventListener("keydown",e=>{ if(e.target.closest("input")) return; if(e.key==="ArrowRight") step(1); if(e.key==="ArrowLeft") step(-1) });
+
+/* ---------- copy email ---------- */
+$("#copyEmail").onclick=async e=>{ const t="Jing.Yang"+"@"+"charlotte.edu", b=e.currentTarget;
+  try{ await navigator.clipboard.writeText(t); b.textContent="Copied" }catch{ const r=document.createRange(); r.selectNodeContents($("#email")); const s=getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent="Selected" }
+  setTimeout(()=>b.textContent="Copy",1600) };
+
+/* ---------- boot ---------- */
+
+/* ---------- research map (t-SNE of topic tags, computed offline; recomputed Oct 31 2026 after the keyword edits) ---------- */
+const MAP = {"pos":{"J29":[0.6739,0.9302],"J28":[0.9157,0.0665],"J27":[0.6574,0.9561],"J26":[0.6699,0.9036],"J25":[0.6148,0.659],"J24":[0.6119,0.6356],"J23":[0.9121,0.0945],"J22":[0.6778,0.9534],"J21":[0.809,0.3969],"J20":[0.2566,0.3581],"J19":[0.6891,1.0],"J18":[0.6526,0.9942],"J17":[0.6202,0.6067],"J16":[0.9276,0.1381],"J15":[0.9285,0.0947],"J14":[0.0133,0.1252],"J13":[0.5451,0.5814],"J11":[0.5905,0.5977],"J10":[0.5546,0.6185],"J9":[0.5616,0.0224],"J8":[0.5406,0.6042],"J6":[0.9522,0.1515],"J5":[0.3017,0.7084],"J4":[0.3017,0.1365],"J3":[0.2753,0.0703],"J2":[0.2667,0.0885],"C26":[0.2821,0.7181],"C25":[0.9854,0.0972],"C24":[0.6731,0.9806],"C23":[0.6397,0.9367],"C22":[0.7759,0.447],"C21":[0.9584,0.0762],"C20":[0.5054,0.0324],"C19":[1.0,0.1043],"C18":[0.7028,0.9851],"C17":[0.7901,0.3959],"C16":[0.5563,0.0088],"C15":[0.1508,0.4393],"C14":[0.575,0.5889],"C13":[0.1627,0.4047],"C12":[0.1557,0.4243],"C11":[0.3334,0.113],"C10":[0.3182,0.7018],"C8":[0.9371,0.1595],"C7":[0.2687,0.5438],"C5":[0.2872,0.1459],"C4":[0.3155,0.1663],"C3":[0.2772,0.1149],"C2":[0.2606,0.122],"C1":[0.0,0.1141],"B3":[0.0027,0.0944],"A7":[0.5287,0.0],"P7":[0.932,0.054],"P5":[0.7844,0.4293],"J1":[0.04,0.1741],"C27":[0.1,0.96]},"clusters":[{"label":"Urban mobility & trajectories","ids":["J29","J27","J26","J22","J19","J18","C24","C23","C18"]},{"label":"Time series in applications","ids":["J28","J23","J16","J15","J6","C25","C21","C19","C8","P7"]},{"label":"High-dimensional data","ids":["J4","J3","J2","C11","C5","C4","C3","C2"]},{"label":"Text & news","ids":["J25","J24","J17","J13","J11","J10","J8","C14"]},{"label":"Images & video","ids":["J5","C26","C10","C7"]},{"label":"Categorical data & topics","ids":["J21","C22","C17","P5"]},{"label":"Biology & health","ids":["J9","C16","A7","C20"]},{"label":"Trees & graphs","ids":["J14","C1","B3","J1"]},{"label":"Insight, collaboration & guidance","ids":["C15","C13","C12","J20"]},{"label":"Differential privacy","ids":["C27"]}]};
+let mapBuilt=false;
+function buildMap(){
+  const box=$("#map"), W=box.clientWidth, H=box.clientHeight; if(!W) return;
+  const small=W<620, pw=small?40:58, ph=small?30:44, padX=pw/2+8, padY=ph/2+26;
+  const pts=GALLERY.filter(p=>MAP.pos[p.id]).map(p=>({p,x:padX+MAP.pos[p.id][0]*(W-2*padX),y:padY+MAP.pos[p.id][1]*(H-2*padY-10)}));
+  // spread overlapping thumbnails apart
+  for(let it=0;it<240;it++){ let moved=false;
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const a=pts[i],b=pts[j];
+      const dx=b.x-a.x, dy=b.y-a.y, ox=pw+6-Math.abs(dx), oy=ph+6-Math.abs(dy);
+      if(ox>0&&oy>0){ moved=true; if(ox<oy*1.3){const s=(dx>=0?1:-1)*ox/2; a.x-=s; b.x+=s}else{const s=(dy>=0?1:-1)*oy/2; a.y-=s; b.y+=s} }}
+    pts.forEach(q=>{q.x=Math.max(padX,Math.min(W-padX,q.x)); q.y=Math.max(padY,Math.min(H-ph/2-4,q.y))});
+    if(!moved) break; }
+  const byPid=Object.fromEntries(pts.map(q=>[q.p.id,q]));
+  // hulls + labels
+  const hull=P=>{P=P.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]);const c=(o,a,b)=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);
+    const lo=[],up=[];for(const p of P){while(lo.length>=2&&c(lo[lo.length-2],lo[lo.length-1],p)<=0)lo.pop();lo.push(p)}
+    for(const p of P.slice().reverse()){while(up.length>=2&&c(up[up.length-2],up[up.length-1],p)<=0)up.pop();up.push(p)}return lo.slice(0,-1).concat(up.slice(0,-1))};
+  // cluster labels: pills above each group, nudged so they don't collide
+  const labs=[];
+  MAP.clusters.forEach(cl=>{ const m=cl.ids.map(i=>byPid[i]).filter(Boolean); if(!m.length) return;
+    const cx=m.reduce((a,q)=>a+q.x,0)/m.length, top=Math.min(...m.map(q=>q.y))-ph/2-14;
+    labs.push({t:cl.label,x:cx,y:top,w:cl.label.length*7.6+20}); });
+  for(let it=0;it<80;it++) for(let i=0;i<labs.length;i++) for(let j=i+1;j<labs.length;j++){const a=labs[i],b=labs[j];
+    if(Math.abs(a.x-b.x)<(a.w+b.w)/2+6 && Math.abs(a.y-b.y)<24){ const s=a.y<=b.y?-1:1; a.y+=s*3; b.y-=s*3; }}
+  mapPts=pts; mapDims={pw,ph}; drawTagOutline();
+  const lh=$("#mapLabs"); lh.innerHTML=labs.map(l=>`<span class="clab" style="left:${Math.max(l.w/2,Math.min(W-l.w/2,l.x)).toFixed(1)}px;top:${Math.max(0,l.y).toFixed(1)}px">${esc(l.t)}</span>`).join("");
+  const holder=$("#mapPts"); holder.innerHTML="";
+  pts.forEach(q=>{ const b=document.createElement("button"); b.type="button"; b.className="mpt"+(q.p.award?" has-award":""); b.dataset.id=q.p.id;
+    b.style.left=q.x+"px"; b.style.top=q.y+"px"; b.setAttribute("aria-label",`${q.p.short}, ${q.p.vs} ${q.p.year}`);
+    const fe=figureEl(q.p,"mfig"); fe.querySelectorAll("img").forEach(i=>i.loading="eager"); b.appendChild(fe);
+    if(q.p.c100) b.insertAdjacentHTML("beforeend",`<span class="mflower" title="100+ citations on Google Scholar">${FLOWER}</span>`);
+    b.onclick=()=>openPaper(q.p.id);
+    b.onmouseenter=b.onfocus=()=>{const t=$("#mtip"); t.innerHTML=`<b>${esc(q.p.short)}</b>${q.p.sub?`<br>${esc(q.p.sub)}`:""}<br><span>${esc(q.p.vs)} \u00b7 ${q.p.year}</span>`; t.hidden=false;
+      const tx=Math.min(W-270,Math.max(0,q.x+pw)), ty=q.y-ph/2-10; t.style.left=tx+"px"; t.style.top=Math.max(0,ty)+"px";};
+    b.onmouseleave=b.onblur=()=>{$("#mtip").hidden=true};
+    holder.appendChild(b); });
+  requestAnimationFrame(()=>paintCanvases(holder)); mapBuilt=true; mapFx();
+}
+let mapPts=[], mapDims={pw:58,ph:44};
+function drawTagOutline(){
+  const svg=$("#mapSvg"); svg.innerHTML=""; const T=[...state.topics];
+  if(!anyFilter()) return;
+  const sel=mapPts.filter(q=>matches(q.p));
+  const {pw,ph}=mapDims, pad=pw<50?7:10, solo=[...T,state.fData,state.fArea,state.fMethod].filter(Boolean), c=solo.length===1&&!state.q&&!state.fVenue&&state.year===null?tcol(solo[0]):"var(--accent)";
+  const layer=(inf,attrs)=>`<g ${attrs}>`+sel.map(q=>`<rect x="${(q.x-pw/2-inf).toFixed(1)}" y="${(q.y-ph/2-inf).toFixed(1)}" width="${(pw+2*inf).toFixed(1)}" height="${(ph+2*inf).toFixed(1)}" rx="${inf+4}"/>`).join("")+"</g>";
+  // union of padded boxes: coloured ring = big boxes in colour, covered by slightly smaller boxes in the page colour, then a light tint
+  svg.innerHTML=layer(pad+2.5,`style="fill:${c}"`)+layer(pad,`style="fill:var(--surface)"`)+layer(pad,`style="fill:${c};opacity:.14"`);
+}
+$("#map").addEventListener("click",e=>{ if(e.target.closest(".mpt")||!anyFilter()) return; clearFilters(); update(); });
+function mapFx(){ if(!mapBuilt) return; drawTagOutline(); const h=state.hover;
+  document.querySelectorAll(".mpt").forEach(el=>{ const p=byId[el.dataset.id]; el.classList.toggle("dim", !matches(p) || (!!h && !p.topics.includes(h))) }); }
+function setView(v){
+  document.querySelectorAll(".viewswitch [data-view]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.view===v));
+  $("#viewTitle").textContent = v==="map"?"Research map":"Topic cloud";
+  const td=$("#topicsDesc"); if(td){ td.dataset.cloud ??= td.textContent;
+    td.textContent = v==="map" ? "Papers with similar topics sit close together. Hover a figure for its title and click to open the paper. Use the search and filters to outline matching papers; click an empty spot on the map to clear them." : td.dataset.cloud; }
+  $("#cloud").hidden = $("#legend").hidden = v==="map"; $("#mapView").hidden = v!=="map";
+  if(v==="map") requestAnimationFrame(buildMap);
+  try{ localStorage.setItem("jy-view",v) }catch(e){}
+}
+document.querySelectorAll(".viewswitch [data-view]").forEach(b=>b.onclick=()=>setView(b.dataset.view));
+/* publications: figures grid or list with thumbnails */
+const PDESC={grid:"Click any figure to read about the paper and open it. Switch to List for every publication with full details.",
+  list:"Every publication, with a figure for each paper. Click a figure or title to read about the paper."};
+function setPubView(v){
+  document.querySelectorAll("[data-pview]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.pview===v));
+  $("#gridView").hidden = v!=="grid"; $("#listView").hidden = v!=="list"; $("#pubsDesc").textContent=PDESC[v];
+  requestAnimationFrame(()=>paintCanvases(v==="list"?$("#listView"):$("#gridView")));
+  try{ localStorage.setItem("jy-pubview",v) }catch(e){}
+}
+document.querySelectorAll("[data-pview]").forEach(b=>b.onclick=()=>setPubView(b.dataset.pview));
+let mrz; addEventListener("resize",()=>{ if($("#mapView").hidden) return; clearTimeout(mrz); mrz=setTimeout(buildMap,200) });
+
+buildCloud(); buildGrid(); buildList(); update();
+try{ if(localStorage.getItem("jy-view")==="map") setView("map") }catch(e){}
+try{ if(localStorage.getItem("jy-pubview")==="list") setPubView("list") }catch(e){}
+requestAnimationFrame(()=>paintCanvases());
+let rz; addEventListener("resize",()=>{ clearTimeout(rz); rz=setTimeout(()=>paintCanvases(),150) });
+const retheme=()=>{ paintCanvases() };
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",retheme);
+new MutationObserver(retheme).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+
+</script>
+
+</body></html>

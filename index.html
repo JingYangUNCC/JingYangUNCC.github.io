@@ -1129,26 +1129,30 @@ const SUMMARY = {
 /* an extra figure shown under a paper's summary (e.g. the view a song sings about) */
 const SUMMARY_FIG = { J28: {src:"figures/J28-sum.jpg", alt:"EVis RadViz circle views: each circle traces how environmental conditions moved before an event"} };
 const songAudio = new Audio(); songAudio.preload = "none";
-function songUI(){ const on=!songAudio.paused;
-  const b=document.querySelector("#dSong .sp"); if(!b) return;
+function songUI(){ const b=document.querySelector("#dSong .sp"); if(!b) return;
+  const on=!songAudio.paused && songAudio.src.endsWith($("#dSong").dataset.src||"\u0000");
   b.textContent = on ? "❚❚" : "▶"; b.setAttribute("aria-label", on ? "Pause song" : "Play song"); }
 songAudio.addEventListener("error",()=>{ const b=$("#dSong"); if(b) b.hidden=true; }); // file not uploaded yet
 songAudio.addEventListener("play",songUI); songAudio.addEventListener("pause",songUI);
 songAudio.addEventListener("ended",()=>{ songAudio.currentTime=0; songUI(); });
-songAudio.addEventListener("timeupdate",()=>{ const i=document.querySelector("#dSong .sbar i"); if(i&&songAudio.duration) i.style.width=(100*songAudio.currentTime/songAudio.duration)+"%"; });
-function showSong(p){
+songAudio.addEventListener("timeupdate",()=>{ const i=document.querySelector("#dSong .sbar i"); if(i&&songAudio.duration&&songAudio.src.endsWith($("#dSong").dataset.src||"\u0000")) i.style.width=(100*songAudio.currentTime/songAudio.duration)+"%"; });
+function showSong(p, autoplay){
   const box=$("#dSong"), s=SONGS[p.id];
-  if(!(s && songAudio.src.endsWith(SONG_DIR+s.file) && !songAudio.paused)) songAudio.pause();
+  if(autoplay && !(s && songAudio.src.endsWith(SONG_DIR+s.file) && !songAudio.paused)) songAudio.pause();
   if(!s){ box.hidden=true; box.innerHTML=""; return; }
   box.hidden=false;
   box.innerHTML=`<button class="sp" type="button" aria-label="Play song">▶</button>
     <div class="si"><b>♪ A song about this paper</b><div class="sbar" title="Seek"><i></i></div></div>
     ${s.lyrics?`<button class="sl" type="button" aria-expanded="false">Lyrics</button><pre class="sly" hidden>${esc(s.lyrics)}</pre>`:""}`;
-  box.querySelector(".sp").onclick=()=>{ songAudio.paused ? songAudio.play().catch(()=>{}) : songAudio.pause(); };
-  box.querySelector(".sbar").onclick=e=>{ if(!songAudio.duration) return; const r=e.currentTarget.getBoundingClientRect(); songAudio.currentTime=songAudio.duration*(e.clientX-r.left)/r.width; };
+  box.dataset.src=SONG_DIR+s.file;
+  box.querySelector(".sp").onclick=()=>{ const src=SONG_DIR+s.file;
+    if(!songAudio.src.endsWith(src)){ playQueue=null; songAudio.src=src; songAudio.currentTime=0; songAudio.play().catch(()=>{}); return; }
+    songAudio.paused ? songAudio.play().catch(()=>{}) : songAudio.pause(); };
+  box.querySelector(".sbar").onclick=e=>{ if(!songAudio.duration||!songAudio.src.endsWith(SONG_DIR+s.file)) return; const r=e.currentTarget.getBoundingClientRect(); songAudio.currentTime=songAudio.duration*(e.clientX-r.left)/r.width; };
   const lb=box.querySelector(".sl"); if(lb) lb.onclick=()=>{ const ly=box.querySelector(".sly"); ly.hidden=!ly.hidden; lb.setAttribute("aria-expanded",!ly.hidden); };
   const src=SONG_DIR+s.file;
   if(songAudio.src.endsWith(src) && !songAudio.paused) { songUI(); return; } // already playing from the song list: keep going
+  if(!autoplay){ songUI(); return; }   // only papers opened from the Paper songs panel start their song
   if(!songAudio.src.endsWith(src)) songAudio.src=src;
   songAudio.currentTime=0; songAudio.play().catch(()=>{}); // opening the box is a click, so browsers allow the song to start
 }
@@ -1187,7 +1191,7 @@ songAudio.addEventListener("ended",()=>{ if(playQueue){ const k=playQueue.indexO
         <span>${esc(p.vs)} · ${p.year}${s.dur?" · "+fmtTime(s.dur):""}</span><div class="sbar" title="Seek"><i></i></div><div class="sbtns"><button type="button" class="slyr spaper" aria-label="Open the paper ${esc(p.short)}">Paper ›</button>${s.lyrics?`<button type="button" class="slyr">Lyrics</button>`:""}</div></div>`;
       const lab=c.querySelector(".label"), fe=figureEl(p,""); fe.style.cssText="position:absolute;inset:0"; lab.appendChild(fe);
       c.querySelector(".vinyl").onclick=()=>{ playQueue=null; playSong(id); }; // the record itself plays / pauses
-      c.querySelector(".smeta").onclick=e=>{ if(e.target.closest(".spaper")) { openPaper(id); return; } if(e.target.closest(".slyr")) { openLyrics(id); return; } if(!e.target.closest(".sbar")) openPaper(id); }; // the whole text block opens the paper
+      c.querySelector(".smeta").onclick=e=>{ if(e.target.closest(".spaper")) { openPaper(id, true); return; } if(e.target.closest(".slyr")) { openLyrics(id); return; } if(!e.target.closest(".sbar")) openPaper(id, true); }; // the whole text block opens the paper
       c.querySelector(".sp").onclick=()=>{ playQueue=null; playSong(id); };
       c.querySelector(".sbar").onclick=e=>{ if(!songAudio.src.endsWith(SONG_DIR+s.file)||!songAudio.duration) return; const r=e.currentTarget.getBoundingClientRect(); songAudio.currentTime=songAudio.duration*(e.clientX-r.left)/r.width; };
       list.appendChild(c);
@@ -1273,7 +1277,7 @@ document.addEventListener("click",e=>{
 const dlg=$("#dlg"); let cur=null, lastAnchor=null;
 document.addEventListener("click", e => { const a = e.target.closest(".tile,.pub,.related button"); if (a && !dlg.contains(a)) lastAnchor = a; }, true);
 function navList(){ const vis=GALLERY.filter(p=>matches(p)); return (vis.some(p=>p.id===cur)?vis:PAPERS.filter(p=>matches(p)).some(p=>p.id===cur)?PAPERS.filter(p=>matches(p)):PAPERS) }
-function openPaper(id){
+function openPaper(id, autoplay){
   cur=id; const p=byId[id];
   const fig=$("#dFig"); fig.innerHTML=""; fig.scrollTop=0;
   // left side: a short summary of the paper on top, the figure below
@@ -1299,7 +1303,7 @@ function openPaper(id){
   $("#dAuthors").innerHTML = authorsHTML(p.authors);
   $("#dVenue").innerHTML = `${esc(p.venue)}, ${p.year}${p.c100?CITE_TAG:""}${p.note?`<span class="badge">${esc(p.note)}</span>`:""}${p.award?`<br><span class="badge gold" style="margin:6px 0 0;display:inline-block;white-space:normal">${esc(p.award)}</span>`:""}`;
   $("#dTags").innerHTML = p.topics.map(t=>`<button class="chip" type="button" data-topic="${t}" style="--c:${tcol(t)}"><i></i>${esc(TOPICS[t][0])}</button>`).join("");
-  showSong(p);
+  showSong(p, !!autoplay);
   $("#dTags").querySelectorAll("[data-topic]").forEach(b=>b.onclick=()=>{ state.topics=new Set([b.dataset.topic]); state.year=null; update(); dlg.close(); $("#h-pubs").scrollIntoView({behavior:"smooth"}) });
   const L=p.links||{}; let a="";
   const first = L.paper||L.pdf||L.summary||L.poster;

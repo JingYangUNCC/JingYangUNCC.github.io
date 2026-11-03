@@ -1343,7 +1343,7 @@ function openPaper(id, autoplay){
 function step(d){ const L=navList(); const i=L.findIndex(p=>p.id===cur); openPaper(L[(i+d+L.length)%L.length].id) }
 $("#dPrev").onclick=()=>step(-1); $("#dNext").onclick=()=>step(1); $("#dClose").onclick=()=>dlg.close();
 dlg.addEventListener("click",e=>{ if(e.target===dlg) dlg.close() });
-dlg.addEventListener("close",()=>songAudio.pause());
+// closing a paper box leaves any playing song alone; it can be paused from Paper songs
 dlg.addEventListener("keydown",e=>{ if(e.target.closest("input")) return; if(e.key==="ArrowRight") step(1); if(e.key==="ArrowLeft") step(-1) });
 
 /* ---------- copy email ---------- */
